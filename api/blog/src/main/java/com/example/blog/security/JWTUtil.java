@@ -1,7 +1,9 @@
 package com.example.blog.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,19 +14,26 @@ public class JWTUtil {
     private static final String KEY = "minhaChaveSecreta";
 
     public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
-                .signWith(SignatureAlgorithm.HS512, KEY)
-                .compact();
+        return JWT.create()
+                .withSubject(username)
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
+                .sign(Algorithm.HMAC512(KEY));
     }
 
     public boolean validateToken(String token, String username) {
-        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(token).getBody().getSubject().equals(username);
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC512(KEY)).build();
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt.getSubject().equals(username);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(token).getBody().getSubject();
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC512(KEY)).build();
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getSubject();
     }
 }

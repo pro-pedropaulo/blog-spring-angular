@@ -18,10 +18,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -44,13 +40,15 @@ public class UserService {
     }
 
     public User authenticate(String username, String password) {
-        Optional<Object> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            User userFound = (User) user.get();
-            if (userFound.getPassword().equals(password)) {
-                return userFound;
-            }
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return user.get();
         }
         return null;
     }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
 }

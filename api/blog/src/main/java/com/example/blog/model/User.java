@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 @Entity
 @Data
@@ -19,4 +22,5 @@ public class User {
     private String password;
     private String email;
     private String gender;
+
 }

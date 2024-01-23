@@ -1,5 +1,6 @@
 package com.example.blog.controller;
 
+import com.example.blog.DTO.LoginDTO;
 import com.example.blog.model.User;
 import com.example.blog.security.JWTUtil;
 import com.example.blog.service.UserService;
@@ -27,21 +28,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        User authenticatedUser = userService.authenticate(user.getUsername(), user.getPassword());
-        if (authenticatedUser != null) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        User user = userService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
+        if (user != null) {
             String token = jwtUtil.generateToken(user.getUsername());
             return ResponseEntity.ok(Collections.singletonMap("token", token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
