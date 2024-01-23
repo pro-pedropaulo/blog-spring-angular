@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @Setter
 @Getter
+@Table(name = "post")
 
 public class Post {
     @Id
@@ -24,4 +25,8 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

@@ -42,4 +42,15 @@ public class UserService {
                     return true;
                 }).orElse(false);
     }
+
+    public User authenticate(String username, String password) {
+        Optional<Object> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            User userFound = (User) user.get();
+            if (userFound.getPassword().equals(password)) {
+                return userFound;
+            }
+        }
+        return null;
+    }
 }

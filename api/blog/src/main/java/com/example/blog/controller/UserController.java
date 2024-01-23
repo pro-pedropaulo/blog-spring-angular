@@ -1,11 +1,14 @@
 package com.example.blog.controller;
 
 import com.example.blog.model.User;
+import com.example.blog.security.JWTUtil;
 import com.example.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -15,9 +18,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JWTUtil jwtUtil;
+
     @GetMapping
     public List<User> getAllUsers() {
         return userService.findAll();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        User authenticatedUser = userService.authenticate(user.getUsername(), user.getPassword());
+        if (authenticatedUser != null) {
+            String token = jwtUtil.generateToken(user.getUsername());
+            return ResponseEntity.ok(Collections.singletonMap("token", token));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @GetMapping("/{id}")

@@ -11,6 +11,7 @@ import java.util.Set;
 @Data
 @Getter
 @Setter
+@Table(name = "album")
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
