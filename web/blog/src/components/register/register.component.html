@@ -1,0 +1,43 @@
+<div class="register-container">
+    <mat-card>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="username">
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+            <mat-label>Senha</mat-label>
+            <input matInput formControlName="password" type="password">
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>Repetir Senha</mat-label>
+            <input matInput formControlName="confirmPassword" type="password">
+          </mat-form-field>          
+  
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+          </mat-form-field>
+
+    
+          <mat-form-field appearance="fill">
+            <mat-label>Sexo</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="male">Masculino</mat-option>
+              <mat-option value="female">Feminino</mat-option>
+              <mat-option value="other">Outros</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <div class="actions">
+            <button mat-raised-button color="primary">Cadastrar</button>
+            <button mat-button (click)="navigateBack()">Voltar</button>
+          </div>
+  
+      </form>
+    </mat-card>
+  </div>
+  
