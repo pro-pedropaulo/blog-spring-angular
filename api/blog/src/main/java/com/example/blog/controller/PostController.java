@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,7 +84,6 @@ public class PostController {
             if (file.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No file uploaded");
             }
-
             String imageUrl = cloudinaryService.uploadImage(file);
             return ResponseEntity.ok().body(Map.of("imageUrl", imageUrl));
         } catch (Exception e) {
@@ -90,4 +91,22 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping("/upload-images")
+    public ResponseEntity<?> handleMultipleImageUpload(@RequestParam("files") MultipartFile[] files) {
+        try {
+            List<String> imageUrls = new ArrayList<>();
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String imageUrl = cloudinaryService.uploadImage(file);
+                    imageUrls.add(imageUrl);
+                }
+            }
+            return ResponseEntity.ok().body(Map.of("imageUrls", imageUrls));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

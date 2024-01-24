@@ -28,6 +28,11 @@ public class Post {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @ElementCollection
+    @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "images_url")
+    private List<String> imageUrls;
+
     @ManyToOne
     private User app_user;
 
