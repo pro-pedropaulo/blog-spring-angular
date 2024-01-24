@@ -8,6 +8,7 @@
       <mat-card-subtitle>Autor: {{ post.app_user?.username }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+      
       <!-- Carrossel para múltiplas imagens com alternância automática -->
       <ngb-carousel *ngIf="post.imageUrls && post.imageUrls.length > 1" [interval]="10000">
         <ng-template ngbSlide *ngFor="let url of post.imageUrls">
@@ -22,7 +23,7 @@
       <div [innerHTML]="sanitizeHtml(post)"></div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button>Comentários ({{ post.comments?.length || 0 }})</button>
+      <button mat-button (click)="navigateToComments(post.id!)">Comentários ({{ post.comments?.length || 0 }})</button>
       <button *ngIf="isLoggedIn() && post.app_user?.username === getLoggedInUsername() && post.id !== undefined" class="delete-button" (click)="deletePost(post.id)">
         <mat-icon>delete</mat-icon> Excluir
       </button>      

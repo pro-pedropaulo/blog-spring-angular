@@ -29,6 +29,11 @@ getAllPosts(): Observable<Post[]> {
   return this.http.get<Post[]>(`${this.apiUrl}/posts`);
 }
 
+getPostsById(postId: number): Observable<Post> {
+  console.log('postId', postId);
+  return this.http.get<Post>(`${this.apiUrl}/posts/${postId}`);
+}
+
 deletePost(postId: number): Observable<any> {
   const token = this.authService.getToken();
   if (!token) {

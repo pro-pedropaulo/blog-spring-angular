@@ -1,0 +1,29 @@
+mat-card {
+    margin: 10px;
+  }
+  
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .comment-card {
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .author-name {
+    font-weight: bold;
+    color: #00796b; 
+  }
+  
+  .comment-date {
+    color: #757575;
+  }
+  

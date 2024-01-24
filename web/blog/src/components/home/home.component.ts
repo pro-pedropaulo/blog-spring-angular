@@ -44,7 +44,6 @@ export class HomeComponent {
     return this.sanitizer.bypassSecurityTrustHtml(post.content || '');
   }
   
-
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
@@ -84,5 +83,11 @@ export class HomeComponent {
   getLoggedInUsername(): string | null {
     return this.authService.getLoggedInUsername();
   }
+
+  navigateToComments(postId: number): void {
+    this.router.navigate(['/comments', postId]);
+  }
+  
+  
   
 }
