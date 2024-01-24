@@ -7,6 +7,7 @@ export class Post {
       public createdDate?: Date,
       public app_user?: { username: string },
       public imageUrl?: string,
+      public imageUrls?: string[],
     ) {}
   }
   

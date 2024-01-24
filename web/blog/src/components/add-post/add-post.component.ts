@@ -100,35 +100,42 @@ export class AddPostComponent {
             } catch (error) {
                 console.error('Erro ao fazer upload da imagem:', error);
             }
-        } else if (this.postType === 'album') {
-    //         try {
-    //             let imageUrls: string[] = [];
-    //             if (this.selectedImages.length > 0) {
-    //                 console.log('Fazendo upload das imagens...');
-    //                 const imageUrls = await this.postService.uploadMultipleImages(this.selectedImages, createdPost.id);
-    //                 console.log('Upload das imagens concluído!');
-    //             }
-    
-    //             const albumToSubmit: Post = {
-    //                 title: this.postData.title,
-    //                 images: imageUrls.map(url => ({ imageUrl: url }))
-    //             };
-    
-    //             this.postService.createPost(albumToSubmit).subscribe({
-    //                 next: (response) => {
-    //                     console.log('Álbum criado com sucesso!', response);
-    //                     // Redirecionar ou limpar formulário
-    //                 },
-    //                 error: (error) => {
-    //                     console.error('Erro ao criar álbum', error);
-    //                 }
-    //             });
-    //         } catch (error) {
-    //             console.error('Erro ao fazer upload das imagens:', error);
-    //         }
-    //     }
-    // }
+        }
+            else if (this.postType === 'album') {
+                try {
+                    let imageUrlsArray: string[] = [];
+                    if (this.selectedImages.length > 0) {
+                        console.log('Fazendo upload das imagens...');
+                        imageUrlsArray = await this.postService.uploadMultipleImages(this.selectedImages);
+                        console.log('Upload das imagens concluído!', imageUrlsArray);
+                    }
+            
+                    // Criar um objeto Post para o álbum
+                    const albumToSubmit: Post = {
+                        title: this.postData.title,
+                        content: this.postData.content, // Você pode querer adicionar uma descrição ou outro conteúdo aqui
+                        imageUrls: imageUrlsArray // Atribuindo o array de URLs de imagem
+                    };
+            
+                    // Realizar a chamada para criar o post tipo álbum
+                    this.postService.createPost(albumToSubmit).subscribe({
+                        next: (response) => {
+                            console.log('Álbum criado com sucesso!', response);
+                            // Aqui você pode redirecionar o usuário ou limpar o formulário
+                            // Por exemplo, resetar o formulário ou redirecionar para outra página
+                        },
+                        error: (error) => {
+                            console.error('Erro ao criar álbum', error);
+                            // Tratamento de erros, como exibir uma mensagem de erro ao usuário
+                        }
+                    });
+                } catch (error) {
+                    console.error('Erro ao fazer upload das imagens:', error);
+                    // Tratamento de erro para o caso de falha no upload das imagens
+                }
+            }
         }
     }
+                    
     
-}
+

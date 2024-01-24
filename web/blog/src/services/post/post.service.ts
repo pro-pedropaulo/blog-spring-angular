@@ -55,6 +55,25 @@ async uploadImage(file: File): Promise<string> {
   }
 }
 
+async uploadMultipleImages(files: File[]): Promise<string[]> {
+  const formData = new FormData();
+
+  // Append each file under the same key 'files'
+  files.forEach((file) => {
+    formData.append('files', file);
+  });
+
+  try {
+    console.log('Fazendo upload das imagens...');
+    const response = await this.http.post<any>('http://localhost:8080/posts/upload-images', formData).toPromise();
+    return response.imageUrls;
+  } catch (error) {
+    console.error('Erro ao fazer upload das imagens:', error);
+    throw error;
+  }
+}
+
+
 
 
 }

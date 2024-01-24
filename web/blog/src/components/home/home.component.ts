@@ -40,13 +40,18 @@ export class HomeComponent {
   sanitizeHtml(post: Post): SafeHtml {
     let htmlContent = post.content || '';
   
-    if (post.imageUrl) {
+    // Verifica se imageUrl está vazio e imageUrls está disponível
+    if (!post.imageUrl && post.imageUrls && post.imageUrls.length > 0) {
+      const imagesHtml = post.imageUrls.map(url => `<img src="${url}" class="post-image">`).join('');
+      htmlContent = imagesHtml + htmlContent;
+    } else if (post.imageUrl) {
       const imageHtml = `<img src="${post.imageUrl}" class="post-image">`;
       htmlContent = imageHtml + htmlContent;
     }
   
     return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
   }
+  
   
   
 
