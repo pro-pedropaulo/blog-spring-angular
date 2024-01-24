@@ -1,5 +1,6 @@
 package com.example.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -19,11 +20,22 @@ public class Comment {
 
     private String content;
 
-    @ManyToOne
-    private User user;
+    @Transient
+    private String username;
 
     @ManyToOne
+    private User app_user;
+
+    @ManyToOne
+    @JsonIgnore
     private Post post;
 
+    @Column(name = "post_id", insertable = false, updatable = false)
+    private Long postId;
+
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public String getUsername() {
+        return app_user != null ? app_user.getUsername() : "Visitante";
+    }
 }

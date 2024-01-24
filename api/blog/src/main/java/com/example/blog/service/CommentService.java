@@ -41,4 +41,8 @@ public class CommentService {
                     return true;
                 }).orElse(false);
     }
+
+    public List<Comment> findCommentsByPostId(Long postId) {
+        return commentRepository.findByPostId(postId);
+    }
 }
