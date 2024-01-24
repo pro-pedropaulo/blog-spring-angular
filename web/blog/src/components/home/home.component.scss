@@ -15,3 +15,31 @@
     justify-content: center;
   }
   
+  .post-card {
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-card-header {
+    background-color: #f5f5f5;
+  }
+  
+  .post-card-content {
+    padding: 15px;
+  }
+  
+  .add-post-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+  }
+  
+  .post-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
