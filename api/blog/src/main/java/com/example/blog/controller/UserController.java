@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -32,7 +32,10 @@ public class UserController {
         User user = userService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
         if (user != null) {
             String token = jwtUtil.generateToken(user.getUsername());
-            return ResponseEntity.ok(Collections.singletonMap("token", token));
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", user.getUsername());
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

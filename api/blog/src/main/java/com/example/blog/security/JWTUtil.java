@@ -31,7 +31,7 @@ public class JWTUtil {
         }
     }
 
-    public String extractUsername(String token) {
+    public String getUsernameFromToken(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC512(KEY)).build();
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getSubject();

@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,15 +21,20 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+
+    @Column(length = 5000)
     private String content;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne
-    private User user;
+    private User app_user;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
 }
