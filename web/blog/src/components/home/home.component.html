@@ -8,6 +8,17 @@
       <mat-card-subtitle>Autor: {{ post.app_user?.username }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+      <!-- Carrossel para múltiplas imagens com alternância automática -->
+      <ngb-carousel *ngIf="post.imageUrls && post.imageUrls.length > 1" [interval]="10000">
+        <ng-template ngbSlide *ngFor="let url of post.imageUrls">
+          <img [src]="url" class="post-image">
+        </ng-template>
+      </ngb-carousel>
+      
+      <!-- Imagem única -->
+      <img *ngIf="post.imageUrl && (!post.imageUrls || post.imageUrls.length === 0)" [src]="post.imageUrl" class="post-image">
+      
+      <!-- Conteúdo do post -->
       <div [innerHTML]="sanitizeHtml(post)"></div>
     </mat-card-content>
     <mat-card-actions>

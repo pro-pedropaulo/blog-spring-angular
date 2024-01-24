@@ -58,7 +58,6 @@ async uploadImage(file: File): Promise<string> {
 async uploadMultipleImages(files: File[]): Promise<string[]> {
   const formData = new FormData();
 
-  // Append each file under the same key 'files'
   files.forEach((file) => {
     formData.append('files', file);
   });
@@ -72,8 +71,5 @@ async uploadMultipleImages(files: File[]): Promise<string[]> {
     throw error;
   }
 }
-
-
-
 
 }

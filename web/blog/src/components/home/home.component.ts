@@ -11,12 +11,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule} from '@angular/material/icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [HeaderComponent, CommonModule, HttpClientModule,
-    MatCardModule, MatInputModule, MatButtonModule, MatIconModule ],
+    MatCardModule, MatInputModule, MatButtonModule, MatIconModule,
+    NgbModule],
   providers: [PostService, AuthService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -38,21 +41,8 @@ export class HomeComponent {
   }
 
   sanitizeHtml(post: Post): SafeHtml {
-    let htmlContent = post.content || '';
-  
-    // Verifica se imageUrl está vazio e imageUrls está disponível
-    if (!post.imageUrl && post.imageUrls && post.imageUrls.length > 0) {
-      const imagesHtml = post.imageUrls.map(url => `<img src="${url}" class="post-image">`).join('');
-      htmlContent = imagesHtml + htmlContent;
-    } else if (post.imageUrl) {
-      const imageHtml = `<img src="${post.imageUrl}" class="post-image">`;
-      htmlContent = imageHtml + htmlContent;
-    }
-  
-    return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+    return this.sanitizer.bypassSecurityTrustHtml(post.content || '');
   }
-  
-  
   
 
   isLoggedIn(): boolean {

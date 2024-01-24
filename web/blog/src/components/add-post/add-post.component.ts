@@ -110,19 +110,15 @@ export class AddPostComponent {
                         console.log('Upload das imagens concluído!', imageUrlsArray);
                     }
             
-                    // Criar um objeto Post para o álbum
                     const albumToSubmit: Post = {
                         title: this.postData.title,
-                        content: this.postData.content, // Você pode querer adicionar uma descrição ou outro conteúdo aqui
-                        imageUrls: imageUrlsArray // Atribuindo o array de URLs de imagem
+                        content: this.postData.content, 
+                        imageUrls: imageUrlsArray
                     };
             
-                    // Realizar a chamada para criar o post tipo álbum
                     this.postService.createPost(albumToSubmit).subscribe({
                         next: (response) => {
                             console.log('Álbum criado com sucesso!', response);
-                            // Aqui você pode redirecionar o usuário ou limpar o formulário
-                            // Por exemplo, resetar o formulário ou redirecionar para outra página
                         },
                         error: (error) => {
                             console.error('Erro ao criar álbum', error);
