@@ -1,30 +1,35 @@
 <mat-card>
     <mat-card-content>
-        <h2>Comentários</h2>
-        <div *ngFor="let comment of comments" class="comment">
-            <mat-card class="comment-card">
-                <mat-card-header>
-                    <mat-card-title>
-                        Autor: <span class="author-name">{{ comment.username }}</span>
-                    </mat-card-title>
-                    <mat-card-subtitle>
-                        Data: <span class="comment-date">{{ comment.createdAt | date: 'medium' }}</span>
-                    </mat-card-subtitle>
-                    <button *ngIf="isCommentAuthor(comment.username)" mat-icon-button (click)="deleteComment(comment.id!)" aria-label="Excluir comentário">
-                        <mat-icon>delete</mat-icon>
-                      </button>                      
-                </mat-card-header>
-                <mat-card-content>
-                    {{ comment.content }}
-                </mat-card-content>
-            </mat-card>
-        </div>
+      <h2>Comentários</h2>
+      <div *ngFor="let comment of comments" class="comment">
+        <mat-card class="comment-card">
+          <mat-card-header>
+            <mat-card-title>
+              Autor: <span class="author-name">{{ comment.username }}</span>
+            </mat-card-title>
+            <mat-card-subtitle>
+              Data: <span class="comment-date">{{ comment.createdAt | date: 'medium' }}</span>
+            </mat-card-subtitle>
+            <button *ngIf="isCommentAuthor(comment.username)"
+                    mat-icon-button
+                    class="comment-delete-button"
+                    (click)="deleteComment(comment.id!)"
+                    aria-label="Excluir comentário">
+              <mat-icon class="comment-delete-icon">delete</mat-icon>
+            </button>                      
+          </mat-card-header>
+          <mat-card-content>
+            {{ comment.content }}
+          </mat-card-content>
+        </mat-card>
+      </div>
     </mat-card-content>
     <mat-card-actions *ngIf="authService.getLoggedInUsername()">
-        <mat-form-field appearance="fill">
-          <mat-label>Adicionar um comentário</mat-label>
-          <textarea matInput [(ngModel)]="newCommentContent"></textarea>
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="postComment()">Postar Comentário</button>
-      </mat-card-actions>
-    </mat-card>
+      <mat-form-field appearance="fill">
+        <mat-label>Adicionar um comentário</mat-label>
+        <textarea matInput [(ngModel)]="newCommentContent"></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="postComment()">Postar Comentário</button>
+    </mat-card-actions>
+  </mat-card>
+  

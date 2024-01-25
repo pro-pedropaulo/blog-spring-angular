@@ -10,7 +10,5 @@ export class Post {
     public imageUrls?: string[],
     public likeCount?: number,     
     public dislikeCount?: number, 
-    public likes?: Set<string>,
-    public dislikes?: Set<string>
   ) {}
   }

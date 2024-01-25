@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
@@ -7,21 +7,36 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
+import { AuthService } from '../../services/auth/auth-service.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule, ConfirmDialogComponent, MatDialogModule, MatIconModule, MatButtonModule, MatMenuModule],
+  providers: [AuthService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
 
-  constructor(private router: Router,
-    public dialog: MatDialog) { }
+  constructor(
+    private authService: AuthService, 
+    public dialog: MatDialog, 
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
+    this.checkTokenExpiry();
+  }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('access_token');
+  }
+
+  checkTokenExpiry() {
+    if (this.authService.isTokenExpired()) {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+    }
   }
 
   navigateToLogin() {
@@ -44,5 +59,6 @@ export class HeaderComponent {
   logout() {
     localStorage.clear();
     this.router.navigate(['']);
+    this.changeDetectorRef.detectChanges(); 
   }
 }
