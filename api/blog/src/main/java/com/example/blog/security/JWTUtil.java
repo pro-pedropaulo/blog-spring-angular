@@ -17,7 +17,7 @@ public class JWTUtil {
         return JWT.create()
                 .withSubject(username)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validade
+                .withExpiresAt(new Date(System.currentTimeMillis() + 7200000)) // 2 horas de validade
                 .sign(Algorithm.HMAC512(KEY));
     }
 
