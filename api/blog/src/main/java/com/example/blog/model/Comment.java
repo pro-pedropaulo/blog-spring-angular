@@ -36,6 +36,6 @@ public class Comment {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public String getUsername() {
-        return app_user != null ? app_user.getUsername() : "Visitante";
+        return app_user != null ? app_user.getUsername() : null;
     }
 }

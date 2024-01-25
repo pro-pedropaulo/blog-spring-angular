@@ -47,18 +47,9 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long id, Principal principal) {
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not authenticated");
-        }
-
+    public ResponseEntity<?> deleteComment(@PathVariable Long id) {
         Comment comment = commentService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
-
-        Post post = comment.getPost();
-        if (post == null || !post.getApp_user().getUsername().equals(principal.getName())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to delete this comment");
-        }
 
         commentService.delete(id);
         return ResponseEntity.ok().build();

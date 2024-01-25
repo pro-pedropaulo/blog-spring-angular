@@ -109,4 +109,32 @@ public class PostController {
         }
     }
 
+    @PostMapping("/{id}/like")
+    public ResponseEntity<?> likePost(@PathVariable Long id, HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authHeader.substring(7);
+        try {
+            String username = jwtUtil.getUsernameFromToken(token);
+            postService.likePost(id, username);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error processing like");
+        }
+    }
+
+
+    @PostMapping("/{id}/dislike")
+    public ResponseEntity<?> dislikePost(@PathVariable Long id, HttpServletRequest request) {
+        String username = jwtUtil.getUsernameFromToken(request.getHeader("Authorization").substring(7));
+        try {
+            postService.dislikePost(id, username);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error processing dislike");
+        }
+    }
+
 }

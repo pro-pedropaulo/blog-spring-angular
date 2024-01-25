@@ -1,7 +1,6 @@
 package com.example.blog.service;
 
-
-import com.cloudinary.Cloudinary;
+import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,11 +16,11 @@ public class CloudinaryService {
     private Cloudinary cloudinary;
 
     public CloudinaryService() {
-        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "dq8fo12xu",
-                "api_key", "377558495654854",
-                "api_secret", "Hs-Fd3xcDfL2S8rczQGyDZFQejE"
-        ));
+//        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+//                "cloud_name", "dq8fo12xu",
+//                "api_key", "377558495654854",
+//                "api_secret", "Hs-Fd3xcDfL2S8rczQGyDZFQejE"
+//        ));
     }
 
     public String uploadImage(MultipartFile file) throws IOException {

@@ -42,4 +42,29 @@ public class PostService {
                     return true;
                 }).orElse(false);
     }
+
+    public Post likePost(Long postId, String username) {
+        return postRepository.findById(postId).map(post -> {
+            post.getDislikes().remove(username);
+
+            if (!post.getLikes().add(username)) {
+                post.getLikes().remove(username);
+            }
+
+            return postRepository.save(post);
+        }).orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
+    public Post dislikePost(Long postId, String username) {
+        return postRepository.findById(postId).map(post -> {
+            post.getLikes().remove(username);
+
+            if (!post.getDislikes().add(username)) {
+                post.getDislikes().remove(username);
+            }
+
+            return postRepository.save(post);
+        }).orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
 }

@@ -8,7 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -41,5 +43,26 @@ public class Post {
 
     @CreationTimestamp
     private LocalDateTime createdDate;
+
+    @ElementCollection
+    @CollectionTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "username")
+    private Set<String> likes = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "post_dislikes", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "username")
+    private Set<String> dislikes = new HashSet<>();
+
+    private Long likeCount;
+    private Long dislikeCount;
+
+    public void setLikeCount(long likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public void setDislikeCount(long dislikeCount) {
+        this.dislikeCount = dislikeCount;
+    }
 
 }
