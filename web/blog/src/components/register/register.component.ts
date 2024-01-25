@@ -10,12 +10,13 @@ import { User } from '../../model/user.model';
 import { HttpClientModule } from '@angular/common/http';
 import { UserCreatedModalComponent } from '../../modals/user-created-modal/user-created-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [MatCardModule, MatInputModule, MatButtonModule, ReactiveFormsModule, HttpClientModule, UserCreatedModalComponent, MatSelectModule ],
+  imports: [MatCardModule, MatInputModule, MatButtonModule, ReactiveFormsModule, HttpClientModule, UserCreatedModalComponent, MatSelectModule, CommonModule ],
   providers: [UserService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -33,8 +34,8 @@ export class RegisterComponent {
      ngOnInit(): void {
       this.registerForm = this.fb.group({
         username: ['', [Validators.required]],
-        password: ['', [Validators.required, Validators.pattern(/\d/)]],
-        confirmPassword: [''],
+        password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[A-Z]).{8,}$/)]], 
+        confirmPassword: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         gender: ['', [Validators.required]]
       }, { validator: this.passwordMatchValidator });
@@ -42,7 +43,7 @@ export class RegisterComponent {
   
     passwordMatchValidator(g: FormGroup) {
       return g.get('password')?.value === g.get('confirmPassword')?.value
-        ? null : {'mismatch': true};
+        ? null : { 'mismatch': true };
     }
 
   onSubmit() {

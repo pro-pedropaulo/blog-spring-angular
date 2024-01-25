@@ -10,10 +10,9 @@
                     <mat-card-subtitle>
                         Data: <span class="comment-date">{{ comment.createdAt | date: 'medium' }}</span>
                     </mat-card-subtitle>
-                    <!-- Botão de excluir -->
-                    <button *ngIf="isAuthor" mat-icon-button (click)="deleteComment(comment.id!)" aria-label="Excluir comentário">
+                    <button *ngIf="isCommentAuthor(comment.username)" mat-icon-button (click)="deleteComment(comment.id!)" aria-label="Excluir comentário">
                         <mat-icon>delete</mat-icon>
-                    </button>
+                      </button>                      
                 </mat-card-header>
                 <mat-card-content>
                     {{ comment.content }}
@@ -21,11 +20,11 @@
             </mat-card>
         </div>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions *ngIf="authService.getLoggedInUsername()">
         <mat-form-field appearance="fill">
-            <mat-label>Adicionar um comentário</mat-label>
-            <textarea matInput [(ngModel)]="newCommentContent"></textarea>
+          <mat-label>Adicionar um comentário</mat-label>
+          <textarea matInput [(ngModel)]="newCommentContent"></textarea>
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="postComment()">Postar Comentário</button>
-    </mat-card-actions>
-</mat-card>
+      </mat-card-actions>
+    </mat-card>

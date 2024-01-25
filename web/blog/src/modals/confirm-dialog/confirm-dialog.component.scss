@@ -1,0 +1,23 @@
+.confirm-yes-button {
+    color: white;
+    background-color: red;
+  }
+  
+  .confirm-no-button {
+    color: white;
+    background-color: green;
+  }
+  
+  mat-dialog-actions {
+    justify-content: space-between;
+  }
+  
+  mat-dialog-content p {
+    margin: 0;
+    padding: 1em;
+  }
+  
+  button {
+    margin: 0 0.5em;
+  }
+  

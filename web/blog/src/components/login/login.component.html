@@ -1,19 +1,19 @@
 <div class="login-container">
-    <mat-card>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <mat-form-field>
-          <mat-label>Login</mat-label>
-          <input matInput formControlName="username">
-        </mat-form-field>
-  
-        <mat-form-field>
-          <mat-label>Senha</mat-label>
-          <input matInput formControlName="password" type="password">
-        </mat-form-field>
-  
-        <button mat-raised-button color="primary">Entrar</button>
-        <button type="button" mat-button (click)="navigateToRegister()">Cadastre-se</button>
-      </form>
-    </mat-card>
-  </div>
-  
+  <mat-card>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Login</mat-label>
+        <input matInput formControlName="username" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" type="password" required (keyup.enter)="onSubmit()">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Entrar</button>
+      <div *ngIf="loginError" class="error-message">{{ loginError }}</div>
+      <button mat-button (click)="navigateToRegister()">Cadastre-se</button>
+    </form>
+  </mat-card>
+</div>

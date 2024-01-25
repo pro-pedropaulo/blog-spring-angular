@@ -77,4 +77,24 @@ async uploadMultipleImages(files: File[]): Promise<string[]> {
   }
 }
 
+likePost(postId: number): Observable<Post> {
+  const token = this.authService.getToken();
+  if (!token) {
+    console.error('Authentication token not found');
+    return throwError(() => new Error('Authentication token not found'));
+  }
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  console.log('postId', postId);
+  return this.http.post<Post>(`${this.apiUrl}/posts/${postId}/like`, {}, { headers });
+}
+
+
+dislikePost(postId: number): Observable<Post> {
+  return this.http.post<Post>(`${this.apiUrl}/posts/${postId}/dislike`, {});
+}
+
 }

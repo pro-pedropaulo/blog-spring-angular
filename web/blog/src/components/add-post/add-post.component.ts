@@ -12,6 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { QuillModule } from 'ngx-quill';
 import { AuthService } from '../../services/auth/auth-service.service';
+import { SuccessModalComponent } from '../../modals/success-modal/success-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-post',
@@ -24,6 +27,14 @@ import { AuthService } from '../../services/auth/auth-service.service';
   styleUrl: './add-post.component.scss'
 })
 export class AddPostComponent {
+
+    constructor(private postService: PostService,
+        private dialog: MatDialog,
+        private router: Router,
+        ) {}
+
+    selectedImage: File | null = null;
+    selectedImages: File[] = [];
 
     editorOptions = {
         modules: {
@@ -41,13 +52,7 @@ export class AddPostComponent {
         imageUrl: ''
     };
 
-
-    constructor(private postService: PostService) {}
-    selectedImage: File | null = null;
-    selectedImages: File[] = [];
-
     
-
     onTypeChange() {
         // Lógica para lidar com a mudança de tipo
     }
@@ -70,8 +75,6 @@ export class AddPostComponent {
         }
     }
     
-    
-
     async onSubmit() {
         if (this.postType === 'post') {
             try {
@@ -90,8 +93,13 @@ export class AddPostComponent {
     
                 this.postService.createPost(postToSubmit).subscribe({
                     next: (response) => {
-                        console.log('Post criado com sucesso!', response);
-                        // Redirecionar ou limpar formulário
+                        const dialogRef = this.dialog.open(SuccessModalComponent, 
+                            { data: { title: 'Post criado com sucesso!' } }
+                          );                        
+                          setTimeout(() => {
+                            dialogRef.close();
+                            this.router.navigate(['']);
+                        }, 1500);
                     },
                     error: (error) => {
                         console.error('Erro ao criar post', error);
@@ -118,16 +126,20 @@ export class AddPostComponent {
             
                     this.postService.createPost(albumToSubmit).subscribe({
                         next: (response) => {
-                            console.log('Álbum criado com sucesso!', response);
+                            const dialogRef = this.dialog.open(SuccessModalComponent, 
+                                { data: { title: 'Álbum criado com sucesso!' } }
+                              );                        
+                              setTimeout(() => {
+                                dialogRef.close();
+                                this.router.navigate(['']);
+                            }, 1500);
                         },
                         error: (error) => {
-                            console.error('Erro ao criar álbum', error);
-                            // Tratamento de erros, como exibir uma mensagem de erro ao usuário
+                            console.error('Erro ao criar post', error);
                         }
                     });
                 } catch (error) {
                     console.error('Erro ao fazer upload das imagens:', error);
-                    // Tratamento de erro para o caso de falha no upload das imagens
                 }
             }
         }

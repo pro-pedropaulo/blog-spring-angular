@@ -1,45 +1,109 @@
 .add-post-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: blue;
-    color: white;
-    font-size: 24px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .post-card {
-    margin: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .post-card-header {
-    background-color: #f5f5f5;
-  }
-  
-  .post-card-content {
-    padding: 15px;
-  }
-  
-  .add-post-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-  }
-  
-  .post-image {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-  }
-  
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #4285F4;
+  color: white;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.post-card {
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-card-header {
+  background-color: #f5f5f5;
+  position: relative; 
+}
+
+.date-container {
+  display: flex;
+  align-items: center;
+}
+
+.date-icon {
+  color: #555;
+}
+
+.date-icon {
+  font-size: 20px; 
+}
+
+.post-card-content {
+  padding: 15px;
+}
+
+.post-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.custom-delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.custom-delete mat-icon {
+  font-size: 24px;
+}
+
+.like-button {
+  color: green;
+}
+
+.dislike-button {
+  color: red;
+}
+
+.like-button mat-icon, .dislike-button mat-icon {
+  font-size: 20px; 
+}
+
+.like-button, .dislike-button {
+  font-size: 14px; 
+}
+
+.comment-count {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.date-badge {
+  display: inline-block;
+  background-color: #e7e7e7;
+  padding: 3px 8px;
+  border-radius: 16px;
+  margin-left: 32px;
+}
+
+.mat-card-subtitle {
+  padding-left: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.number-likes {
+  position: relative;
+  top: -8px;
+}

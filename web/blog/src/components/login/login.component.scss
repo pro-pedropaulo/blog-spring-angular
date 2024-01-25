@@ -1,16 +1,36 @@
 .login-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  height: 100vh;
+
   mat-card {
-    width: 400px; 
     padding: 20px;
+    width: 100%;
+    max-width: 400px; 
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      mat-form-field {
+        width: 100%; 
+      }
+
+      button[type="submit"] {
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      .error-message {
+        color: #d32f2f;
+        margin-top: 10px;
+      }
+
+      button[type="button"] {
+        margin-top: 15px;
+        width: 100%;
+      }
+    }
   }
-  
-  button[mat-button] {
-    margin-top: 10px;
-  }
-  
+}

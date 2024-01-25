@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { AuthService } from '../../services/auth/auth-service.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,10 +31,9 @@ export class CommentsComponent {
   postId: number = 0;
   isAuthor: boolean = false;
 
-
   constructor(
     private commentService: CommentService,
-    private authService: AuthService,
+    public authService: AuthService,
     private route: ActivatedRoute,
     private postService: PostService
   ) { }
@@ -50,17 +48,20 @@ export class CommentsComponent {
   }
 
   checkIfAuthor(): void {
-    // Supondo que você tenha uma função para buscar os detalhes do post
     this.postService.getPostsById(this.postId).subscribe(post => {
       console.log('Post:', post);
       this.isAuthor = this.authService.getLoggedInUsername() === post.app_user?.username;
     });
   }
 
+  isCommentAuthor(commentUsername: any): boolean {
+    const loggedInUsername = this.authService.getLoggedInUsername();
+    return loggedInUsername === commentUsername;
+  }
+  
+
   deleteComment(commentId: number): void {
-    // Chama o serviço para excluir o comentário
     this.commentService.deleteComment(commentId).subscribe(() => {
-      // Recarregar os comentários
       this.loadCommentsByPostId(this.postId);
     });
   }
@@ -94,9 +95,5 @@ export class CommentsComponent {
         }
     });
 }
-
-
-
-  
 }
 

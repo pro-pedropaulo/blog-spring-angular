@@ -14,8 +14,13 @@
           <path d="M5 12h14M12 5l7 7-7 7"></path>
         </svg>
       </button>
-      <button *ngIf="isLoggedIn()" (click)="logout()" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-        Logout
-      </button>
+      <div *ngIf="isLoggedIn()" class="menu-container">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openConfirmLogoutDialog()">Sair</button>
+        </mat-menu>
+      </div>
     </div>
   </header>
