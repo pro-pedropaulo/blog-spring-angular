@@ -57,7 +57,6 @@ export class CommentsComponent {
 
   checkIfAuthor(): void {
     this.postService.getPostsById(this.postId).subscribe(post => {
-      console.log('Post:', post);
       this.isAuthor = this.authService.getLoggedInUsername() === post.app_user?.username;
     });
   }

@@ -83,7 +83,6 @@ export class HomeComponent {
     });
   }
   
-
   reloadPosts(): void {
     this.postService.getAllPosts().subscribe({
       next: (data) => {
@@ -152,7 +151,6 @@ export class HomeComponent {
   deletePostConfirmed(postId: number): void {
     this.postService.deletePost(postId).subscribe({
       next: () => {
-        console.log('Post excluído com sucesso');
         this.excludedPosts.add(postId);
         this.postsMap.delete(postId);
         this.updatePostsToShow();

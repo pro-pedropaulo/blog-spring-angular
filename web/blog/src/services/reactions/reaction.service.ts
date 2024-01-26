@@ -17,8 +17,6 @@ reactToPost(postId: number, isLike?: boolean): Observable<any> {
   const reaction = new Reaction();
   reaction.username = username || '';
   reaction.reactionLike = isLike; 
-  console.log('reaction', reaction);
   return this.http.post(`${this.apiUrl}/${postId}/react`, reaction);
 }
-
 }

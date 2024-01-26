@@ -46,8 +46,12 @@ export class HeaderComponent {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('access_token');
+    if (typeof window !== 'undefined') {
+      return !!localStorage.getItem('token');
+    }
+    return false;
   }
+  
 
   checkTokenExpiry() {
     if (this.authService.isTokenExpired()) {

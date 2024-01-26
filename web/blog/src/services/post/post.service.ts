@@ -30,7 +30,6 @@ getAllPosts(): Observable<Post[]> {
 }
 
 getPostsById(postId: number): Observable<Post> {
-  console.log('postId', postId);
   return this.http.get<Post>(`${this.apiUrl}/posts/${postId}`);
 }
 
@@ -68,7 +67,6 @@ async uploadMultipleImages(files: File[]): Promise<string[]> {
   });
 
   try {
-    console.log('Fazendo upload das imagens...');
     const response = await this.http.post<any>('http://localhost:8080/posts/upload-images', formData).toPromise();
     return response.imageUrls;
   } catch (error) {
@@ -88,7 +86,6 @@ likePost(postId: number): Observable<Post> {
     'Authorization': `Bearer ${token}`
   });
 
-  console.log('postId', postId);
   return this.http.post<Post>(`${this.apiUrl}/posts/${postId}/like`, {}, { headers });
 }
 

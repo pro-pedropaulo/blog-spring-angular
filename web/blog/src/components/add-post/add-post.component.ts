@@ -111,9 +111,7 @@ export class AddPostComponent {
             try {
                 let imageUrl = '';
                 if (this.selectedImage) {
-                    console.log('Fazendo upload da imagem...');
                     imageUrl = await this.postService.uploadImage(this.selectedImage);
-                    console.log('Upload da imagem concluído!');
                 }
     
                 const postToSubmit: Post = {
@@ -144,9 +142,7 @@ export class AddPostComponent {
                 try {
                     let imageUrlsArray: string[] = [];
                     if (this.selectedImages.length > 0) {
-                        console.log('Fazendo upload das imagens...');
                         imageUrlsArray = await this.postService.uploadMultipleImages(this.selectedImages);
-                        console.log('Upload das imagens concluído!', imageUrlsArray);
                     }
             
                     const albumToSubmit: Post = {
