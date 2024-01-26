@@ -75,10 +75,8 @@ export class CommentsComponent {
       if (result) {
         this.commentService.deleteComment(commentId).subscribe({
           next: () => {
-            // Remover o comentário da lista e adicionar seu ID ao conjunto de IDs excluídos
             this.comments = this.comments.filter(comment => comment.id !== commentId);
             this.deletedCommentIds.add(commentId);
-  
             this.changeDetectorRef.detectChanges();
           },
           error: (err) => {
@@ -89,21 +87,17 @@ export class CommentsComponent {
     });
   }
   
-  
   loadCommentsByPostId(postId: number): void {
     this.commentService.getCommentsByPostId(postId).subscribe({
       next: (allComments) => {
-        // Filtrar comentários que não estão no array de comentários carregados e que não foram excluídos
         const newComments = allComments.filter(comment => 
           !this.comments.some(c => c.id === comment.id) && 
           !this.deletedCommentIds.has(comment.id!)
         );
   
-        // Adicionar novos comentários até atingir a quantidade desejada
         const commentsToAdd = newComments.slice(0, this.commentsToShow - this.comments.length);
         this.comments = [...this.comments, ...commentsToAdd];
   
-        // Verificar se ainda existem mais comentários para carregar
         this.hasMoreComments = this.commentsToShow < allComments.length;
       },
       error: (err) => {
@@ -112,9 +106,6 @@ export class CommentsComponent {
     });
   }
   
-  
-  
-
   loadMoreComments(): void {
     this.commentsToShow += this.commentsToLoad;
     this.loadCommentsByPostId(this.postId);

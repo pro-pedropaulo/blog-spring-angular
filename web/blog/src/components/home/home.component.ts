@@ -31,11 +31,6 @@ import { ReactionService } from '../../services/reactions/reaction.service';
 })
 export class HomeComponent {
 
-  posts: Post[] = [];
-  postsToShow: number = 5;
-  postsToLoad: number = 5;
-  hasMorePosts: boolean = true;
-
   constructor(
     private router: Router,
     private postService: PostService,
@@ -45,6 +40,12 @@ export class HomeComponent {
     private reactionService: ReactionService,
     private cdRef: ChangeDetectorRef
   ) { }
+
+  postsToShow: number = 5;
+  postsToLoad: number = 5;
+  hasMorePosts: boolean = true;
+  postsMap: Map<number, Post> = new Map();
+  excludedPosts = new Set<number>();
 
   ngOnInit(): void {
     this.loadPosts();
@@ -67,26 +68,60 @@ export class HomeComponent {
   loadPosts(loadMore: boolean = false): void {
     this.postService.getAllPosts().subscribe({
       next: (data) => {
+        data.forEach(post => {
+          this.postsMap.set(post.id!, post);
+        });
+
         if (loadMore) {
-          this.posts = [...this.posts, ...data.slice(this.posts.length, this.postsToShow)];
-        } else {
-          this.posts = data.slice(0, this.postsToShow);
+          this.postsToShow += this.postsToLoad;
         }
-        this.hasMorePosts = this.postsToShow < data.length;
+
+        this.hasMorePosts = this.postsToShow < this.postsMap.size;
+        this.cdRef.detectChanges();
       },
       error: (err) => {
         console.error('Erro ao buscar posts:', err);
       }
     });
   }
+
+  get posts(): Post[] {
+    return Array.from(this.postsMap.values()).slice(0, this.postsToShow);
+  }
+
+  deletePostConfirmed(postId: number): void {
+    this.postService.deletePost(postId).subscribe({
+      next: () => {
+        console.log('Post excluído com sucesso');
+        this.postsMap.delete(postId);
+        this.excludedPosts.add(postId); 
+        this.postsToShow = Math.max(0, this.postsToShow - 1);
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao excluir post:', err);
+      }
+    });
+  }
   
   loadMorePosts(): void {
     this.postsToShow += this.postsToLoad;
-    console.log('PostsToShow após incremento:', this.postsToShow);
-    this.loadPosts(true);
-    this.cdRef.detectChanges();
-  }
+    this.postService.getAllPosts().subscribe({
+      next: (data) => {
+        data.forEach(post => {
+          if (!this.excludedPosts.has(post.id!)) {
+            this.postsMap.set(post.id!, post);
+          }
+        });
   
+        this.hasMorePosts = this.postsToShow < this.postsMap.size;
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar mais posts:', err);
+      }
+    });
+  }
   
   openConfirmDialog(postId: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -100,19 +135,7 @@ export class HomeComponent {
       }
     });
   }
-
-  deletePostConfirmed(postId: number): void {
-    this.postService.deletePost(postId).subscribe({
-      next: () => {
-        console.log('Post excluído com sucesso');
-        this.loadPosts();
-      },
-      error: (err) => {
-        console.error('Erro ao excluir post:', err);
-      }
-    });
-  }
-
+  
   isPostAuthor(post: Post): boolean {
     const loggedInUsername = this.authService.getLoggedInUsername(); 
     return post.app_user?.username === loggedInUsername;
