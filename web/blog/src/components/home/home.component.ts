@@ -19,6 +19,8 @@ import { TranslateMonthPipe } from '../../pipes/translate-month.pipe';
 import { ReactionService } from '../../services/reactions/reaction.service';
 import { FooterComponent } from '../footer/footer.component';
 import { LoginPopupComponent } from '../../modals/login-popup/login-popup.component';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { PostUpdateService } from '../../services/util-services/post-update.service';
 
 
 @Component({
@@ -40,7 +42,8 @@ export class HomeComponent {
     private authService: AuthService,
     private dialog: MatDialog,
     private reactionService: ReactionService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private postUpdateService: PostUpdateService
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -55,10 +58,31 @@ export class HomeComponent {
   hasMorePosts: boolean = true;
   postsMap: Map<number, Post> = new Map();
   excludedPosts = new Set<number>();
+  private postUpdateSubscription!: Subscription;
 
   ngOnInit(): void {
     this.reloadPosts();
+    this.subscribeToPostUpdates();
   }
+
+  ngOnDestroy() {
+    if (this.postUpdateSubscription) {
+      this.postUpdateSubscription.unsubscribe();
+    }
+  }
+
+  subscribeToPostUpdates() {
+    this.postUpdateSubscription = this.postUpdateService.postUpdateAction$.subscribe(update => {
+      if (update) {
+        const post = this.postsMap.get(update.postId);
+        if (post) {
+          post.comments = new Array(update.newCommentCount).fill(null);
+          this.cdRef.detectChanges();
+        }
+      }
+    });
+  }
+  
 
   reloadPosts(): void {
     this.postService.getAllPosts().subscribe({
@@ -186,7 +210,9 @@ export class HomeComponent {
   }
 
   navigateToComments(postId: number): void {
-    this.router.navigate(['/comments', postId]);
+    this.router.navigate(['/comments', postId]).then(() => {
+      location.reload();
+    });
   }
   
   handleReaction(post: Post, isLike: boolean): void {

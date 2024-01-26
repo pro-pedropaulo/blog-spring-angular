@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../services/post/post.service';
 import { MatIconModule} from '@angular/material/icon';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
+import { PostUpdateService } from '../../services/util-services/post-update.service';
 
 @Component({
   selector: 'app-comments',
@@ -43,6 +44,7 @@ export class CommentsComponent {
     private postService: PostService,
     public dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
+    private postUpdateService: PostUpdateService
   ) { }
 
   ngOnInit(): void {
@@ -77,6 +79,7 @@ export class CommentsComponent {
           next: () => {
             this.comments = this.comments.filter(comment => comment.id !== commentId);
             this.deletedCommentIds.add(commentId);
+            this.postUpdateService.updatePostComments(this.postId, this.comments.length);
             this.changeDetectorRef.detectChanges();
           },
           error: (err) => {
@@ -90,21 +93,16 @@ export class CommentsComponent {
   loadCommentsByPostId(postId: number): void {
     this.commentService.getCommentsByPostId(postId).subscribe({
       next: (allComments) => {
-        const newComments = allComments.filter(comment => 
-          !this.comments.some(c => c.id === comment.id) && 
-          !this.deletedCommentIds.has(comment.id!)
-        );
-  
-        const commentsToAdd = newComments.slice(0, this.commentsToShow - this.comments.length);
-        this.comments = [...this.comments, ...commentsToAdd];
-  
+        this.comments = allComments;
         this.hasMoreComments = this.commentsToShow < allComments.length;
+        this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
         console.error('Erro ao carregar comentários:', err);
       }
     });
   }
+  
   
   loadMoreComments(): void {
     this.commentsToShow += this.commentsToLoad;
@@ -128,6 +126,8 @@ export class CommentsComponent {
   this.commentService.createComment(newComment).subscribe({
     next: (comment) => {
       this.comments.push(comment);
+      const newCommentCount = this.comments.length;
+      this.postUpdateService.updatePostComments(this.postId, newCommentCount);
       this.newCommentContent = '';
     },
     error: (err) => {
