@@ -15,5 +15,7 @@ public interface ReactionRepository extends JpaRepository<Reaction, Long> {
     Optional<Reaction> findByUserAndPost(User user, Post post);
     @Query("SELECT COUNT(r) FROM Reaction r WHERE r.post = :post AND r.reactionLike = :reactionLike")
     long countByPostAndReactionLike(@Param("post") Post post, @Param("reactionLike") boolean reactionLike);
+
+    void deleteByPostId(Long id);
 }
 
