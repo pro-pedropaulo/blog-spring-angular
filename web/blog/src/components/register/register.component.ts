@@ -56,7 +56,6 @@ export class RegisterComponent {
       }
     }
     
-  
     passwordMatchValidator(g: FormGroup) {
       return g.get('password')?.value === g.get('confirmPassword')?.value
         ? null : { 'mismatch': true };

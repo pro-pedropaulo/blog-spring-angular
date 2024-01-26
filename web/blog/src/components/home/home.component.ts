@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../model/post.model';
 import { PostService } from '../../services/post/post.service';
@@ -40,19 +40,53 @@ export class HomeComponent {
     private dialog: MatDialog,
     private reactionService: ReactionService,
     private cdRef: ChangeDetectorRef
-  ) { }
+  ) {
+    // Adicionando o ouvinte de eventos de rota
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.reloadPosts();
+      }
+    });
+  }
+
 
   postsToShow: number = 5;
   postsToLoad: number = 5;
+  initialPostsToShow: number = 5; 
   hasMorePosts: boolean = true;
   postsMap: Map<number, Post> = new Map();
   excludedPosts = new Set<number>();
 
   ngOnInit(): void {
-    this.loadPosts();
-    // console.log('Usuário logado:', this.getLoggedInUsername());
+    this.reloadPosts();
   }
 
+  reloadPosts(): void {
+    this.postService.getAllPosts().subscribe({
+      next: (data) => {
+        const filteredAndSortedData = data
+          .filter(post => !this.excludedPosts.has(post.id!))
+          .sort((a, b) => {
+            const dateA = a.createdDate ? new Date(a.createdDate).getTime() : 0;
+            const dateB = b.createdDate ? new Date(b.createdDate).getTime() : 0;
+            return dateB - dateA;
+          });
+  
+        this.postsMap.clear();
+        filteredAndSortedData.forEach(post => {
+          this.postsMap.set(post.id!, post);
+        });
+  
+        this.postsToShow = this.initialPostsToShow;
+        this.hasMorePosts = this.postsToShow < this.postsMap.size;
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao buscar posts:', err);
+      }
+    });
+  }  
+  
   sanitizeHtml(post: Post): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(post.content || '');
   }
@@ -61,11 +95,12 @@ export class HomeComponent {
     return this.authService.getToken() != null;
   }
 
-
   navigateToAddPost(): void {
-    this.router.navigate(['/add-post']);
+    this.router.navigate(['/add-post']).then(() => {
+      location.reload();
+    });
   }
-
+  
   loadPosts(loadMore: boolean = false): void {
     this.postService.getAllPosts().subscribe({
       next: (data) => {
@@ -94,16 +129,22 @@ export class HomeComponent {
     this.postService.deletePost(postId).subscribe({
       next: () => {
         console.log('Post excluído com sucesso');
+        this.excludedPosts.add(postId);
         this.postsMap.delete(postId);
-        this.excludedPosts.add(postId); 
-        this.postsToShow = Math.max(0, this.postsToShow - 1);
-        this.cdRef.detectChanges();
+        this.updatePostsToShow();
       },
       error: (err) => {
         console.error('Erro ao excluir post:', err);
       }
     });
   }
+  
+  updatePostsToShow(): void {
+    this.postsToShow = Math.max(0, this.postsToShow - 1);
+    this.cdRef.detectChanges();
+  }
+  
+  
   
   loadMorePosts(): void {
     this.postsToShow += this.postsToLoad;
@@ -156,19 +197,25 @@ export class HomeComponent {
       return;
     }
   
-    const reaction = { postId: post.id, isLike: isLike };
     this.reactionService.reactToPost(post.id!, isLike).subscribe(
       updatedPost => {
-        console.log('Post atualizado:', updatedPost);
+        // Encontra o índice do post atualizado na lista
         const index = this.posts.findIndex(p => p.id === updatedPost.id);
-        console.log('Index:', index);
         if (index !== -1) {
-          this.posts[index] = updatedPost;
+          // Atualiza o post na lista
+          this.postsMap.set(updatedPost.id, updatedPost);
+          // Precisamos atualizar a lista de posts para a mudança refletir no UI
+          this.updatePosts();
         }
       },
       error => console.error('Erro ao processar reação:', error)
     );
   }
+  
+  updatePosts(): void {
+    this.cdRef.detectChanges();
+  }
+  
   
   showLoginPopup(): void {
     alert('Crie uma conta para reagir a este post.');
