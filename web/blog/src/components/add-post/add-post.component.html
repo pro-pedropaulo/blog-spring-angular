@@ -1,3 +1,4 @@
+<app-header></app-header>
 <mat-card class="add-post-card">
     <mat-card-header class="add-post-header">
         <mat-card-title class="add-post-title">Adicionar Post</mat-card-title>
@@ -20,10 +21,18 @@
                 </mat-form-field>
 
                 <div class="image-upload-field">
-                    <input type="file" (change)="onImageSelected($event)" accept="image/*">
-                  </div>
+                    <label for="imageInput" class="custom-file-upload">
+                        Escolher arquivo
+                    </label>
+                    <input id="imageInput" type="file" (change)="onImageSelected($event)" accept="image/*" style="display: none;">
+                    <div *ngIf="previewImage" class="preview-container">
+                        <img [src]="previewImage" class="image-preview">
+                        <button mat-icon-button class="remove-image-button" (click)="removePreviewImage()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
                 
-
                 <div class="editor-field">
                     <label for="content"></label>
                     <quill-editor [(ngModel)]="postData.content" [ngModelOptions]="{standalone: true}" [modules]="editorOptions.modules" class="quill-editor"></quill-editor>
@@ -32,17 +41,24 @@
 
             <!-- Parte do Álbum de Fotos -->
             <div *ngIf="postType === 'album'" class="album-details">
-                <mat-form-field class="title-field" appearance="fill">
+                <mat-form-field class="title-field album-title-field" appearance="fill">
                     <mat-label>Título do Álbum:</mat-label>
                     <input matInput type="text" id="title" [(ngModel)]="postData.title" name="title" required>
                 </mat-form-field>
-            
+                
                 <div class="image-upload-field">
-                    <input type="file" (change)="onImagesSelected($event)" accept="image/*" multiple>
+                    <input type="file" id="imageMultipleInput" (change)="onImagesSelected($event)" accept="image/*" multiple hidden>
+                    <label for="imageMultipleInput" class="custom-file-upload">
+                        Escolher arquivos
+                    </label>
+                    <div class="preview-container" *ngFor="let image of imagePreviews; let i = index">
+                        <img [src]="image" class="image-preview">
+                        <button mat-icon-button class="remove-image-button" (click)="removeSelectedImage(i)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
-            
-
 
             <div class="submit-button">
                 <button mat-raised-button color="primary" type="submit">Enviar</button>

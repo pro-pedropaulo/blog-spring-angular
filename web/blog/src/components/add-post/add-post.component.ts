@@ -15,13 +15,15 @@ import { AuthService } from '../../services/auth/auth-service.service';
 import { SuccessModalComponent } from '../../modals/success-modal/success-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-add-post',
   standalone: true,
-  imports: [CKEditorModule, FormsModule, CommonModule, HttpClientModule,
+  imports: [HeaderComponent, CKEditorModule, FormsModule, CommonModule, HttpClientModule,
     MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule,
-     MatSelectModule, QuillModule],
+     MatSelectModule, MatIconModule,  QuillModule],
   providers: [PostService, AuthService],
   templateUrl: './add-post.component.html',
   styleUrl: './add-post.component.scss'
@@ -35,6 +37,8 @@ export class AddPostComponent {
 
     selectedImage: File | null = null;
     selectedImages: File[] = [];
+    previewImage: string | ArrayBuffer | null = null;
+    imagePreviews: string[] = [];
 
     editorOptions = {
         modules: {
@@ -59,20 +63,48 @@ export class AddPostComponent {
 
     onImageSelected(event: Event) {
         const input = event.target as HTMLInputElement;
-        if (input.files && input.files.length) {
-            this.selectedImage = input.files[0];
+        if (input?.files && input.files[0]) {
+            const file = input.files[0];
+            this.selectedImage = file;
+    
+            const reader = new FileReader();
+            reader.onload = (e: ProgressEvent<FileReader>) => {
+                this.previewImage = e.target!.result;
+            };
+            reader.readAsDataURL(file);
         } else {
             this.selectedImage = null;
+            this.previewImage = null;
         }
     }
 
     onImagesSelected(event: Event) {
         const input = event.target as HTMLInputElement;
-        if (input.files && input.files.length) {
-            this.selectedImages = Array.from(input.files);
-        } else {
-            this.selectedImages = [];
+        if (input.files) {
+            const newFiles = Array.from(input.files);
+            this.selectedImages = [...this.selectedImages, ...newFiles];
+    
+            newFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e: ProgressEvent<FileReader>) => {
+                    if (!this.imagePreviews.includes(e.target!.result as string)) {
+                        this.imagePreviews.push(e.target!.result as string);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
         }
+    }
+    
+
+    removeSelectedImage(index: number) {
+        this.selectedImages.splice(index, 1);
+        this.imagePreviews.splice(index, 1);
+    }
+
+    removePreviewImage() {
+        this.selectedImage = null;
+        this.previewImage = null;
     }
     
     async onSubmit() {
