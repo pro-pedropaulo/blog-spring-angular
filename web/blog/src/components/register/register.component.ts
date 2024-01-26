@@ -11,12 +11,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserCreatedModalComponent } from '../../modals/user-created-modal/user-created-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [MatCardModule, MatInputModule, MatButtonModule, ReactiveFormsModule, HttpClientModule, UserCreatedModalComponent, MatSelectModule, CommonModule ],
+  imports: [MatCardModule, MatInputModule, MatButtonModule, ReactiveFormsModule, HttpClientModule, UserCreatedModalComponent, MatSelectModule, CommonModule, MatIconModule ],
   providers: [UserService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -24,6 +25,8 @@ import { CommonModule } from '@angular/common';
 
 export class RegisterComponent {
   registerForm!: FormGroup;
+  hidePassword = true;
+  hideConfirmPassword = true; 
 
   constructor(private fb: FormBuilder,
      private router: Router,
@@ -81,6 +84,14 @@ export class RegisterComponent {
 
   navigateBack() {
     this.router.navigate(['/']); 
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.hideConfirmPassword = !this.hideConfirmPassword;
   }
 
 }
