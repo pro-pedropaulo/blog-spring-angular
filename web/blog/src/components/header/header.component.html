@@ -3,13 +3,13 @@
 
   <span class="spacer"></span>
 
-  <button mat-button routerLink="/">Home</button>
+  <button mat-button (click)="navigateToHome()">Home</button>
 
-  <div *ngIf="!isLoggedIn()">
+  <div *ngIf="!isLoggedIn() && isHomePage">
     <button mat-button class="login-button" (click)="navigateToLogin()">Login / Cadastre-se</button>
   </div>
   
-  <div *ngIf="isLoggedIn()">
+  <div *ngIf="isLoggedIn() && isHomePage">
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>

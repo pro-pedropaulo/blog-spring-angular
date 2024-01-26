@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../model/post.model';
@@ -22,7 +21,7 @@ import { ReactionService } from '../../services/reactions/reaction.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, HttpClientModule,
+  imports: [CommonModule, HttpClientModule,
     MatCardModule, MatInputModule, MatButtonModule, MatIconModule,
     NgbModule, TranslateDatePipe, TranslateMonthPipe],
   providers: [PostService, AuthService, ReactionService],

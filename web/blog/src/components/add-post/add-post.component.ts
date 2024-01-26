@@ -15,13 +15,12 @@ import { AuthService } from '../../services/auth/auth-service.service';
 import { SuccessModalComponent } from '../../modals/success-modal/success-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { HeaderComponent } from '../header/header.component';
 import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-add-post',
   standalone: true,
-  imports: [HeaderComponent, CKEditorModule, FormsModule, CommonModule, HttpClientModule,
+  imports: [CKEditorModule, FormsModule, CommonModule, HttpClientModule,
     MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule,
      MatSelectModule, MatIconModule,  QuillModule],
   providers: [PostService, AuthService],

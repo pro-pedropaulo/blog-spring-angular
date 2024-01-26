@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +26,23 @@ export class HeaderComponent {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef
   ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.checkIfHomePage(event.url);
+      }
+    });
     this.checkTokenExpiry();
+  }
+
+  isHomePage: boolean = true;
+
+  checkIfHomePage(url: string) {
+    this.isHomePage = url === '/';
+    this.changeDetectorRef.detectChanges();
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/']);
   }
 
   isLoggedIn(): boolean {
