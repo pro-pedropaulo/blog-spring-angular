@@ -1,7 +1,8 @@
 package com.example.blog.service;
 
-import com.cloudinary.*;
+import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,21 +14,18 @@ import java.util.Map;
 @Service
 public class CloudinaryService {
 
-    private Cloudinary cloudinary;
+    private final Cloudinary cloudinary;
 
-    public CloudinaryService() {
-//        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
-//                "cloud_name", "dq8fo12xu",
-//                "api_key", "377558495654854",
-//                "api_secret", "Hs-Fd3xcDfL2S8rczQGyDZFQejE"
-//        ));
+    @Autowired
+    public CloudinaryService(Cloudinary cloudinary) {
+        this.cloudinary = cloudinary;
     }
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    public String uploadFile(MultipartFile file) throws IOException {
         File uploadedFile = convertMultiPartToFile(file);
         Map uploadResult = cloudinary.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
         uploadedFile.delete();
-        return (String) uploadResult.get("url");
+        return uploadResult.get("url").toString();
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {

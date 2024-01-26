@@ -30,7 +30,7 @@ public class PostController {
     private UserService userService;
 
     @Autowired
-    private CloudinaryService cloudinaryService;
+    public CloudinaryService cloudinaryService;
 
     @GetMapping
     public List<Post> getAllPosts() {
@@ -84,7 +84,7 @@ public class PostController {
             if (file.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No file uploaded");
             }
-            String imageUrl = cloudinaryService.uploadImage(file);
+            String imageUrl = cloudinaryService.uploadFile(file);
             return ResponseEntity.ok().body(Map.of("imageUrl", imageUrl));
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class PostController {
             List<String> imageUrls = new ArrayList<>();
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
-                    String imageUrl = cloudinaryService.uploadImage(file);
+                    String imageUrl = cloudinaryService.uploadFile(file);
                     imageUrls.add(imageUrl);
                 }
             }
