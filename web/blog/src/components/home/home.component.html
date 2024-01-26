@@ -20,7 +20,7 @@
       
       <img *ngIf="post.imageUrl && (!post.imageUrls || post.imageUrls.length === 0)" [src]="post.imageUrl" class="post-image">
       
-      <div [innerHTML]="sanitizeHtml(post)"></div>
+      <div [innerHTML]="sanitizeHtml(post)" class="post-content"></div>
     </mat-card-content>
     <mat-card-actions>
       <button mat-button (click)="navigateToComments(post.id!)">
