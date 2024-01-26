@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:latest AS build
 LABEL authors="Pedro"
 
 RUN apt-get update
