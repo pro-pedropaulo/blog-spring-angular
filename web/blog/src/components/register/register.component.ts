@@ -78,8 +78,6 @@ export class RegisterComponent {
           this.dialog.open(UserCreatedModalComponent);
         },
         error: (error) => {
-          console.error('Erro ao criar usuário:', error);
-          // Aqui você pode mostrar um alerta para o usuário
           alert('Erro ao criar usuário: ' + error.error);
         }        
       });

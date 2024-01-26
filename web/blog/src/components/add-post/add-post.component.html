@@ -3,7 +3,11 @@
         <mat-card-title class="add-post-title">Adicionar Post</mat-card-title>
     </mat-card-header>
 
-    <mat-card-content class="add-post-content">
+    <div class="overlay" *ngIf="isLoading">
+        <mat-spinner class="spinner"></mat-spinner>
+    </div>
+    
+        <mat-card-content class="add-post-content">
         <form (submit)="onSubmit()" class="post-form">
             <mat-form-field class="post-type-selector" appearance="fill">
                 <mat-label>Tipo:</mat-label>

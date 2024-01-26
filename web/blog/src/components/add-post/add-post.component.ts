@@ -16,13 +16,14 @@ import { SuccessModalComponent } from '../../modals/success-modal/success-modal.
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-add-post',
   standalone: true,
   imports: [CKEditorModule, FormsModule, CommonModule, HttpClientModule,
     MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule,
-     MatSelectModule, MatIconModule,  QuillModule],
+     MatSelectModule, MatIconModule, MatProgressSpinnerModule,  QuillModule],
   providers: [PostService, AuthService],
   templateUrl: './add-post.component.html',
   styleUrl: './add-post.component.scss'
@@ -38,6 +39,7 @@ export class AddPostComponent {
     selectedImages: File[] = [];
     previewImage: string | ArrayBuffer | null = null;
     imagePreviews: string[] = [];
+    isLoading = false;
 
     editorOptions = {
         modules: {
@@ -107,6 +109,7 @@ export class AddPostComponent {
     }
     
     async onSubmit() {
+        this.isLoading = true;
         if (this.postType === 'post') {
             try {
                 let imageUrl = '';
@@ -122,6 +125,7 @@ export class AddPostComponent {
     
                 this.postService.createPost(postToSubmit).subscribe({
                     next: (response) => {
+                        this.isLoading = false;
                         const dialogRef = this.dialog.open(SuccessModalComponent, 
                             { data: { title: 'Post criado com sucesso!' } }
                           );                        
@@ -132,6 +136,7 @@ export class AddPostComponent {
                     },
                     error: (error) => {
                         console.error('Erro ao criar post', error);
+                        this.isLoading = false;
                     }
                 });
             } catch (error) {
@@ -143,6 +148,7 @@ export class AddPostComponent {
                     let imageUrlsArray: string[] = [];
                     if (this.selectedImages.length > 0) {
                         imageUrlsArray = await this.postService.uploadMultipleImages(this.selectedImages);
+                        this.isLoading = false;
                     }
             
                     const albumToSubmit: Post = {
@@ -153,6 +159,7 @@ export class AddPostComponent {
             
                     this.postService.createPost(albumToSubmit).subscribe({
                         next: (response) => {
+                            this.isLoading = false;
                             const dialogRef = this.dialog.open(SuccessModalComponent, 
                                 { data: { title: 'Álbum criado com sucesso!' } }
                               );                        
@@ -163,10 +170,12 @@ export class AddPostComponent {
                         },
                         error: (error) => {
                             console.error('Erro ao criar post', error);
+                            this.isLoading = false;
                         }
                     });
                 } catch (error) {
                     console.error('Erro ao fazer upload das imagens:', error);
+                    this.isLoading = false;
                 }
             }
         }
