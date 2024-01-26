@@ -9,12 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessModalComponent } from '../../modals/success-modal/success-modal.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatCardModule, MatInputModule, MatButtonModule, ReactiveFormsModule, HttpClientModule, CommonModule],
+  imports: [MatCardModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule, HttpClientModule, CommonModule],
   providers: [AuthService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -22,6 +23,7 @@ import { SuccessModalComponent } from '../../modals/success-modal/success-modal.
 export class LoginComponent {
   loginForm!: FormGroup;
   loginError: string = '';
+  hidePassword = true;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +58,10 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
   }
 
   navigateToRegister() {

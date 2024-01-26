@@ -18,6 +18,7 @@ import { TranslateDatePipe } from '../../pipes/translate-date.pipe';
 import { TranslateMonthPipe } from '../../pipes/translate-month.pipe';
 import { ReactionService } from '../../services/reactions/reaction.service';
 import { FooterComponent } from '../footer/footer.component';
+import { LoginPopupComponent } from '../../modals/login-popup/login-popup.component';
 
 
 @Component({
@@ -26,7 +27,7 @@ import { FooterComponent } from '../footer/footer.component';
   imports: [CommonModule, HttpClientModule,
     MatCardModule, MatInputModule, MatButtonModule, MatIconModule,
     NgbModule, TranslateDatePipe, TranslateMonthPipe, FooterComponent, MatTooltipModule],
-  providers: [PostService, AuthService, ReactionService],
+  providers: [PostService, AuthService, ReactionService, LoginPopupComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -144,8 +145,6 @@ export class HomeComponent {
     this.cdRef.detectChanges();
   }
   
-  
-  
   loadMorePosts(): void {
     this.postsToShow += this.postsToLoad;
     this.postService.getAllPosts().subscribe({
@@ -199,12 +198,9 @@ export class HomeComponent {
   
     this.reactionService.reactToPost(post.id!, isLike).subscribe(
       updatedPost => {
-        // Encontra o índice do post atualizado na lista
         const index = this.posts.findIndex(p => p.id === updatedPost.id);
         if (index !== -1) {
-          // Atualiza o post na lista
           this.postsMap.set(updatedPost.id, updatedPost);
-          // Precisamos atualizar a lista de posts para a mudança refletir no UI
           this.updatePosts();
         }
       },
@@ -216,9 +212,11 @@ export class HomeComponent {
     this.cdRef.detectChanges();
   }
   
-  
   showLoginPopup(): void {
-    alert('Crie uma conta para reagir a este post.');
+    this.dialog.open(LoginPopupComponent, {
+      width: '300px',
+      position: { top: '20px', right: '20px' }
+    });
   }
   
   handleDislike(post: Post): void {

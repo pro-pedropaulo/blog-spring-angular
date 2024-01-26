@@ -1,0 +1,28 @@
+.login-popup {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+    width: 300px;
+  }
+  
+  .login-popup h2 {
+    color: red;
+    margin-top: 0;
+    text-align: center;
+  }
+  
+  p {
+    color: black;
+  }
+  
+  button {
+    background-color: red;
+    color: white;
+  
+    &:hover {
+      background-color: darkred;
+    }
+  }
+  

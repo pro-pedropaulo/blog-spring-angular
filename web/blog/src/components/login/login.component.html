@@ -2,14 +2,17 @@
   <mat-card>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
-        <mat-label>Login</mat-label>
+        <mat-label>Username</mat-label>
         <input matInput formControlName="username" required>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Senha</mat-label>
-        <input matInput formControlName="password" type="password" required (keyup.enter)="onSubmit()">
-      </mat-form-field>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required>
+        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>      
 
       <button mat-raised-button color="primary" type="submit">Entrar</button>
       <div *ngIf="loginError" class="error-message">{{ loginError }}</div>
