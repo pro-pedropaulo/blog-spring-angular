@@ -1,3 +1,4 @@
+
 # Blogs-SOLID
 
 ## Introdução
@@ -30,11 +31,10 @@ Para instalar este projeto, você precisará das seguintes ferramentas:
 ### Backend
 1. Clone o repositório:
 2. git clone https://github.com/pro-pedropaulo/blog-spring-angular.git
-3.
-cd blog-spring-angular/api/blog
-2. Crie um banco de dados PostgreSQL chamado `blog`.
-3. Atualize o arquivo `src/main/resources/application.properties` com as credenciais do seu banco de dados.
-4. Na pasta raiz do projeto backend, execute:
+3. cd blog-spring-angular/api/blog
+4. Crie um banco de dados PostgreSQL chamado `blog`.
+5. Atualize o arquivo `src/main/resources/application.properties` com as credenciais do seu banco de dados.
+6. Na pasta raiz do projeto backend, execute:
 mvn spring-boot:run
 
 
@@ -57,10 +57,11 @@ Acesse `http://localhost:4200` no navegador para ver a aplicação em funcioname
 - **Backend:** Spring Boot 3.2.2, Spring Data JPA, Spring Security, PostgreSQL, Cloudinary (para armazenamento de mídia)
 
 ## Documentação
-A documentação da API está disponível em `http://localhost:8080/swagger-ui/index.html`.
+A documentação da API está disponível em:  http://localhost:8080/swagger-ui/index.html
 
 ## Exemplos
-Um link para um vídeo tutorial no YouTube será adicionado em breve.
+
+- Video  de apresentação do Projeto:  https://youtu.be/4Y3IlOUKH74
 
 ## Resolução de Problemas
 - Problema conhecido: No sistema de like/dislike, quando um usuário dá um like, ele não consegue retirar a reação. Isso será corrigido na próxima atualização.
