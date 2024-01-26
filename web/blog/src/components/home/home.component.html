@@ -47,6 +47,8 @@
   </mat-card>
 </ng-container>
 
+<button mat-button class="ver-mais-button" (click)="loadMorePosts()" *ngIf="hasMorePosts">Ver mais</button>
+
 <button *ngIf="isLoggedIn()" (click)="navigateToAddPost()" mat-fab class="add-post-btn">
   <mat-icon>add</mat-icon>
 </button>

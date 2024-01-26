@@ -31,5 +31,6 @@
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="postComment()">Postar Comentário</button>
     </mat-card-actions>
+    <button mat-button class="ver-mais-button" (click)="loadMoreComments()" *ngIf="hasMoreComments">Ver mais comentários</button>
   </mat-card>
   

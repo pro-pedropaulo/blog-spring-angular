@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -32,6 +32,9 @@ import { ReactionService } from '../../services/reactions/reaction.service';
 export class HomeComponent {
 
   posts: Post[] = [];
+  postsToShow: number = 5;
+  postsToLoad: number = 5;
+  hasMorePosts: boolean = true;
 
   constructor(
     private router: Router,
@@ -39,7 +42,8 @@ export class HomeComponent {
     private sanitizer: DomSanitizer,
     private authService: AuthService,
     private dialog: MatDialog,
-    private reactionService: ReactionService
+    private reactionService: ReactionService,
+    private cdRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -60,17 +64,30 @@ export class HomeComponent {
     this.router.navigate(['/add-post']);
   }
 
-  loadPosts(): void {
+  loadPosts(loadMore: boolean = false): void {
     this.postService.getAllPosts().subscribe({
       next: (data) => {
-        this.posts = data;
+        if (loadMore) {
+          this.posts = [...this.posts, ...data.slice(this.posts.length, this.postsToShow)];
+        } else {
+          this.posts = data.slice(0, this.postsToShow);
+        }
+        this.hasMorePosts = this.postsToShow < data.length;
       },
       error: (err) => {
         console.error('Erro ao buscar posts:', err);
       }
     });
   }
-
+  
+  loadMorePosts(): void {
+    this.postsToShow += this.postsToLoad;
+    console.log('PostsToShow após incremento:', this.postsToShow);
+    this.loadPosts(true);
+    this.cdRef.detectChanges();
+  }
+  
+  
   openConfirmDialog(postId: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
