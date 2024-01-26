@@ -42,9 +42,16 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.save(user);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        if (userService.existsByUsername(user.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Username is already taken!");
+        }
+        User newUser = userService.save(user);
+        return ResponseEntity.ok(newUser);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
