@@ -34,12 +34,28 @@ export class RegisterComponent {
      ngOnInit(): void {
       this.registerForm = this.fb.group({
         username: ['', [Validators.required]],
-        password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[A-Z]).{8,}$/)]], 
+        password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[A-Z]).{8,}$/)]],
         confirmPassword: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         gender: ['', [Validators.required]]
       }, { validator: this.passwordMatchValidator });
+  
+      this.registerForm.get('confirmPassword')!.valueChanges.subscribe(() => {
+        this.checkPasswordMatch();
+      });
     }
+    
+    checkPasswordMatch() {
+      const password = this.registerForm.get('password')!.value;
+      const confirmPassword = this.registerForm.get('confirmPassword')!.value;
+    
+      if (password !== confirmPassword) {
+        this.registerForm.get('confirmPassword')!.setErrors({ mismatch: true });
+      } else {
+        this.registerForm.get('confirmPassword')!.setErrors(null);
+      }
+    }
+    
   
     passwordMatchValidator(g: FormGroup) {
       return g.get('password')?.value === g.get('confirmPassword')?.value
@@ -67,4 +83,5 @@ export class RegisterComponent {
   navigateBack() {
     this.router.navigate(['/']); 
   }
+
 }

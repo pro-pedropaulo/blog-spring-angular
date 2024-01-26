@@ -47,6 +47,9 @@
 
 <button mat-button class="see-more-button" (click)="loadMorePosts()" *ngIf="hasMorePosts">Ver mais</button>
 
-<button *ngIf="isLoggedIn()" (click)="navigateToAddPost()" mat-fab class="add-post-btn">
+<button *ngIf="isLoggedIn()" (click)="navigateToAddPost()" mat-fab class="add-post-btn" matTooltip="Adicionar Post">
   <mat-icon>add</mat-icon>
 </button>
+
+
+<app-footer></app-footer>

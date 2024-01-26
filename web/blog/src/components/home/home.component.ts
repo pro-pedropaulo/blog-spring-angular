@@ -11,11 +11,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule} from '@angular/material/icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateDatePipe } from '../../pipes/translate-date.pipe';
 import { TranslateMonthPipe } from '../../pipes/translate-month.pipe';
 import { ReactionService } from '../../services/reactions/reaction.service';
+import { FooterComponent } from '../footer/footer.component';
 
 
 @Component({
@@ -23,7 +25,7 @@ import { ReactionService } from '../../services/reactions/reaction.service';
   standalone: true,
   imports: [CommonModule, HttpClientModule,
     MatCardModule, MatInputModule, MatButtonModule, MatIconModule,
-    NgbModule, TranslateDatePipe, TranslateMonthPipe],
+    NgbModule, TranslateDatePipe, TranslateMonthPipe, FooterComponent, MatTooltipModule],
   providers: [PostService, AuthService, ReactionService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
