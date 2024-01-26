@@ -7,12 +7,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import { AuthService } from '../../services/auth/auth-service.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, ConfirmDialogComponent, MatDialogModule, MatIconModule, MatButtonModule, MatMenuModule],
+  imports: [CommonModule, ConfirmDialogComponent, MatDialogModule, MatIconModule, MatButtonModule, MatMenuModule, MatToolbarModule],
   providers: [AuthService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -35,7 +36,6 @@ export class HeaderComponent {
   checkTokenExpiry() {
     if (this.authService.isTokenExpired()) {
       this.authService.logout();
-      this.router.navigate(['/login']);
     }
   }
 

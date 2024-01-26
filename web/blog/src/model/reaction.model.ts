@@ -1,4 +1,3 @@
-// Angular - reaction.model.ts
 export class Reaction {
     constructor(
       public id?: number,

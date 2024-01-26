@@ -16,7 +16,6 @@ import { PostService } from '../../services/post/post.service';
 import { MatIconModule} from '@angular/material/icon';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 
-
 @Component({
   selector: 'app-comments',
   standalone: true,
