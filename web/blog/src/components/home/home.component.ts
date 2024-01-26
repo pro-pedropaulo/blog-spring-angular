@@ -42,14 +42,12 @@ export class HomeComponent {
     private reactionService: ReactionService,
     private cdRef: ChangeDetectorRef
   ) {
-    // Adicionando o ouvinte de eventos de rota
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.reloadPosts();
       }
     });
   }
-
 
   postsToShow: number = 5;
   postsToLoad: number = 5;
@@ -90,10 +88,6 @@ export class HomeComponent {
   
   sanitizeHtml(post: Post): SafeHtml {
     let content = post.content || '';
-
-    // Aqui você pode adicionar lógica para processar o conteúdo HTML
-    // Por exemplo, você pode usar um parser de HTML para extrair e manipular apenas os links
-    // Mas para manter simples, vamos apenas garantir que o HTML seja inserido de forma segura
     return this.sanitizer.bypassSecurityTrustHtml(content);
   }
   
