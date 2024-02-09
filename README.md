@@ -14,6 +14,7 @@ Este projeto é um sistema básico para um blog, incluindo adição e exclusão 
 - [Exemplos](#exemplos)
 - [Resolução de Problemas](#resolução-de-problemas)
 - [Contribuidores](#contribuidores)
+- [Versões](#versões)
 - [Licença](#licença)
 - [Melhorias Futuras](#melhorias-futuras)
 
@@ -70,17 +71,23 @@ A documentação da API está disponível em:  http://localhost:8080/swagger-ui/
 ## Contribuidores
 - Pedro Paulo
 
+## Versões
+### versão 1.1 
+- adicionado testes unitarioes para controllers e services
+- adicionado testes de integração para repositories
+
 ## Licença
 Este projeto é disponibilizado sob uma licença livre.
 
 ## Melhorias Futuras
-- Testes Unitários
+- Aprimorar Testes Unitários
 - Padronização de codigo com ESLINT
 - Criação de usuário com verificação por e-mail.
 - Edição de usuário.
 - Deploy da aplicação.
 - Aprimoramento da autenticação com JWT.
-- Migração do armazenamento de mídia do Cloudinary para uma solução em nuvem paga, como AWS.
-- Criação de ambientes para produçaõ e teste
+- Migração do armazenamento de mídia do Cloudinary para AWS.
+- Criação de ambientes para produção e teste
 - Mostrar usuarios que reagiram a publicação
+- Criação excessões personalizadas
 - Outras melhorias conforme necessário.
