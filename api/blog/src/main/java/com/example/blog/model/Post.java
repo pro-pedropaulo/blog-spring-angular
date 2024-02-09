@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class Post {
     @ElementCollection
     @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "images_url")
-    private List<String> imageUrls;
+    private List<String> imageUrls = new ArrayList<>();
 
     @ManyToOne
     private User app_user;
@@ -63,5 +64,13 @@ public class Post {
     public void setDislikeCount(long dislikeCount) {
         this.dislikeCount = dislikeCount;
     }
+
+    public void addImageUrl(String imageUrl) {
+        if (this.imageUrls == null) {
+            this.imageUrls = new ArrayList<>();
+        }
+        this.imageUrls.add(imageUrl);
+    }
+
 
 }
