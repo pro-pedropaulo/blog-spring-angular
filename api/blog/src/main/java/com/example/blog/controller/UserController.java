@@ -60,17 +60,16 @@ public class UserController {
         return ResponseEntity.ok(newUser);
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        return userService.update(id, userDetails)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
+        User updatedUser = userService.update(id, userDetails);
+        return ResponseEntity.ok(updatedUser);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        return userService.delete(id) ?
-                ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 }

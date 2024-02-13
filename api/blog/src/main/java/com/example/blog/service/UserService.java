@@ -23,21 +23,20 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> update(Long id, User userDetails) {
-        return userRepository.findById(id)
-                .map(existingUser -> {
-                    existingUser.setUsername(userDetails.getUsername());
-                    existingUser.setPassword(userDetails.getPassword());
-                    return userRepository.save(existingUser);
-                });
+    public User update(Long id, User userDetails) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+
+        user.setUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
+        user.setEmail(userDetails.getEmail());
+        return userRepository.save(user);
     }
 
-    public boolean delete(Long id) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    userRepository.delete(user);
-                    return true;
-                }).orElse(false);
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+        userRepository.delete(user);
     }
 
     public User authenticate(String username, String password) {

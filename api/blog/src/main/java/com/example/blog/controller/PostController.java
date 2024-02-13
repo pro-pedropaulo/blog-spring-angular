@@ -74,26 +74,12 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
-        return postService.delete(id) ?
-                ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-    }
-
-    @PostMapping("/upload-image")
-    public ResponseEntity<?> handleImageUpload(@RequestParam("file") MultipartFile file) {
-        try {
-            if (file.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No file uploaded");
-            }
-            String imageUrl = cloudinaryService.uploadFile(file);
-            return ResponseEntity.ok().body(Map.of("imageUrl", imageUrl));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        postService.deletePost(id);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/upload-images")
-    public ResponseEntity<?> handleMultipleImageUpload(@RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<?> handleImageUpload(@RequestParam("files") MultipartFile[] files) {
         try {
             List<String> imageUrls = new ArrayList<>();
             for (MultipartFile file : files) {
@@ -110,7 +96,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<?> likePost(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<?> likePost(@Valid @PathVariable Long id, HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -127,7 +113,7 @@ public class PostController {
 
 
     @PostMapping("/{id}/dislike")
-    public ResponseEntity<?> dislikePost(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<?> dislikePost(@Valid @PathVariable Long id, HttpServletRequest request) {
         String username = jwtUtil.getUsernameFromToken(request.getHeader("Authorization").substring(7));
         try {
             postService.dislikePost(id, username);

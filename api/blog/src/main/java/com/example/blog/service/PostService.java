@@ -46,16 +46,15 @@ public class PostService {
     }
 
     @Transactional
-    public boolean delete(Long id) {
-        return postRepository.findById(id)
-                .map(post -> {
-                    commentRepository.deleteByPostId(id);
-                    reactionRepository.deleteByPostId(id);
-                    postRepository.delete(post);
-                    return true;
-                }).orElse(false);
-    }
+    public void deletePost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
 
+        commentRepository.deleteByPostId(id);
+        reactionRepository.deleteByPostId(id);
+
+        postRepository.delete(post);
+    }
 
     public Post likePost(Long postId, String username) {
         return postRepository.findById(postId).map(post -> {

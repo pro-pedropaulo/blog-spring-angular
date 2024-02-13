@@ -40,16 +40,14 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(@PathVariable Long id, @RequestBody Comment commentDetails) {
-        return commentService.update(id, commentDetails)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Comment> updateComment(@PathVariable Long id, @Valid @RequestBody Comment commentDetails) {
+        Comment updatedComment = commentService.update(id, commentDetails);
+        return ResponseEntity.ok(updatedComment);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable Long id) {
-        Comment comment = commentService.findById(id);
-        commentService.delete(id);
+        commentService.deleteComment(id);
         return ResponseEntity.ok().build();
     }
 

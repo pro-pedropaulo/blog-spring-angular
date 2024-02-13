@@ -28,20 +28,20 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public Optional<Comment> update(Long id, Comment commentDetails) {
-        return commentRepository.findById(id)
-                .map(existingComment -> {
-                    existingComment.setContent(commentDetails.getContent());
-                    return commentRepository.save(existingComment);
-                });
+    public Comment update(Long id, Comment commentDetails) {
+        Comment existingComment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + id));
+
+        existingComment.setContent(commentDetails.getContent());
+
+        return commentRepository.save(existingComment);
     }
 
-    public boolean delete(Long id) {
-        return commentRepository.findById(id)
-                .map(comment -> {
-                    commentRepository.delete(comment);
-                    return true;
-                }).orElse(false);
+
+    public void deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + id));
+        commentRepository.delete(comment);
     }
 
     public List<Comment> findCommentsByPostId(Long postId) {

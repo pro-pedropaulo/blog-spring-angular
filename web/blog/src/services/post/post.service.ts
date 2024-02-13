@@ -46,34 +46,26 @@ deletePost(postId: number): Observable<any> {
   return this.http.delete(`${this.apiUrl}/posts/${postId}`, { headers });
 }
 
-async uploadImage(file: File): Promise<string> {
+async uploadImages(files: File | File[]): Promise<string[]> {
   const formData = new FormData();
-  formData.append('file', file);
+
+  if (Array.isArray(files)) {
+      files.forEach(file => {
+          formData.append('files', file);
+      });
+  } else {
+      formData.append('files', files);
+  }
 
   try {
-    const response = await this.http.post<any>('http://localhost:8080/posts/upload-image', formData).toPromise();
-    return response.imageUrl;
+      const response = await this.http.post<any>('http://localhost:8080/posts/upload-images', formData).toPromise();
+      return response.imageUrls;
   } catch (error) {
-    console.error('Erro ao fazer upload da imagem:', error);
-    throw error;
+      console.error('Erro ao fazer upload das imagens:', error);
+      throw error;
   }
 }
 
-async uploadMultipleImages(files: File[]): Promise<string[]> {
-  const formData = new FormData();
-
-  files.forEach((file) => {
-    formData.append('files', file);
-  });
-
-  try {
-    const response = await this.http.post<any>('http://localhost:8080/posts/upload-images', formData).toPromise();
-    return response.imageUrls;
-  } catch (error) {
-    console.error('Erro ao fazer upload das imagens:', error);
-    throw error;
-  }
-}
 
 likePost(postId: number): Observable<Post> {
   const token = this.authService.getToken();

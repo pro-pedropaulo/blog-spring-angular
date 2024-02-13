@@ -109,76 +109,45 @@ export class AddPostComponent {
     
     async onSubmit() {
         this.isLoading = true;
-        if (this.postType === 'post') {
-            try {
-                let imageUrl = '';
-                if (this.selectedImage) {
-                    imageUrl = await this.postService.uploadImage(this.selectedImage);
-                }
-    
-                const postToSubmit: Post = {
-                    title: this.postData.title,
-                    content: this.postData.content,
-                    imageUrl: imageUrl
-                };
-    
-                this.postService.createPost(postToSubmit).subscribe({
-                    next: (response) => {
-                        this.isLoading = false;
-                        const dialogRef = this.dialog.open(SuccessModalComponent, 
-                            { data: { title: 'Post criado com sucesso!' } }
-                          );                        
-                          setTimeout(() => {
-                            dialogRef.close();
-                            this.router.navigate(['']);
-                        }, 1500);
-                    },
-                    error: (error) => {
-                        console.error('Erro ao criar post', error);
-                        this.isLoading = false;
-                    }
-                });
-            } catch (error) {
-                console.error('Erro ao fazer upload da imagem:', error);
+        try {
+            let imageUrlsArray: string[] = [];
+            if (this.postType === 'post' && this.selectedImage) {
+                // Chamada do método unificado com um único arquivo
+                imageUrlsArray = await this.postService.uploadImages(this.selectedImage);
+            } else if (this.postType === 'album' && this.selectedImages.length > 0) {
+                // Chamada do método unificado com múltiplos arquivos
+                imageUrlsArray = await this.postService.uploadImages(this.selectedImages);
             }
-        }
-            else if (this.postType === 'album') {
-                try {
-                    let imageUrlsArray: string[] = [];
-                    if (this.selectedImages.length > 0) {
-                        imageUrlsArray = await this.postService.uploadMultipleImages(this.selectedImages);
-                        this.isLoading = false;
-                    }
-            
-                    const albumToSubmit: Post = {
-                        title: this.postData.title,
-                        content: this.postData.content, 
-                        imageUrls: imageUrlsArray
-                    };
-            
-                    this.postService.createPost(albumToSubmit).subscribe({
-                        next: (response) => {
-                            this.isLoading = false;
-                            const dialogRef = this.dialog.open(SuccessModalComponent, 
-                                { data: { title: 'Álbum criado com sucesso!' } }
-                              );                        
-                              setTimeout(() => {
-                                dialogRef.close();
-                                this.router.navigate(['']);
-                            }, 1500);
-                        },
-                        error: (error) => {
-                            console.error('Erro ao criar post', error);
-                            this.isLoading = false;
-                        }
-                    });
-                } catch (error) {
-                    console.error('Erro ao fazer upload das imagens:', error);
+    
+            // Prepara o objeto Post baseado no tipo de postagem
+            const postToSubmit: Post = {
+                title: this.postData.title,
+                content: this.postData.content,
+                imageUrl: this.postType === 'post' ? imageUrlsArray[0] : '', // Pega a primeira URL para post único
+                imageUrls: this.postType === 'album' ? imageUrlsArray : [] // Usa todas as URLs para álbuns
+            };
+    
+            // Cria o post usando o serviço
+            this.postService.createPost(postToSubmit).subscribe({
+                next: (response) => {
+                    this.isLoading = false;
+                    const dialogRef = this.dialog.open(SuccessModalComponent, { data: { title: this.postType === 'post' ? 'Post criado com sucesso!' : 'Álbum criado com sucesso!' } });
+                    setTimeout(() => {
+                        dialogRef.close();
+                        this.router.navigate(['']);
+                    }, 1500);
+                },
+                error: (error) => {
+                    console.error('Erro ao criar post', error);
                     this.isLoading = false;
                 }
-            }
+            });
+        } catch (error) {
+            console.error('Erro ao fazer upload da(s) imagem(ns):', error);
+            this.isLoading = false;
         }
     }
+}    
                     
     
 
