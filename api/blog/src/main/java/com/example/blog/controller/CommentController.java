@@ -6,6 +6,7 @@ import com.example.blog.model.User;
 import com.example.blog.repository.PostRepository;
 import com.example.blog.service.CommentService;
 import com.example.blog.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +60,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(@RequestBody Comment comment) {
+    public Comment createComment(@Valid @RequestBody Comment comment) {
         Post post = postRepository.findById(comment.getPostId())
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         comment.setPost(post);

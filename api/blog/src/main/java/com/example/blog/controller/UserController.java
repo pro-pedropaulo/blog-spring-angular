@@ -4,9 +4,11 @@ import com.example.blog.DTO.LoginDTO;
 import com.example.blog.model.User;
 import com.example.blog.security.JWTUtil;
 import com.example.blog.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         if (userService.existsByUsername(user.getUsername())) {
             return ResponseEntity
                     .badRequest()
