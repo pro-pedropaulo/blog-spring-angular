@@ -6,7 +6,8 @@ Este projeto é um sistema básico para um blog, incluindo adição e exclusão 
 
 ## Índice
 - [Instalação](#instalação)
-- [Configuração](#configuração)
+- [Configuração Utilizando Docker](#Configuração-Utilizando-Docker)
+- [Configuração Manual](#Configuração-Manual)
   - [Backend](#backend)
   - [Frontend](#frontend)
 - [Dependências](#dependências)
@@ -20,14 +21,26 @@ Este projeto é um sistema básico para um blog, incluindo adição e exclusão 
 
 ## Instalação
 Para instalar este projeto, você precisará das seguintes ferramentas:
+- Docker (recomendado para uma configuração simplificada)
 - Node.js v20.10.0
 - npm v10.2.5
 - Angular CLI 17.1.0
 - Java JDK 17
-- Maven
-- PostgreSQL
+- Maven (se não estiver usando Docker)
+- PostgreSQL (se não estiver usando Docker)
 
-## Configuração
+## Configuração Utilizando Docker (Recomendado)
+
+- O uso do Docker simplifica a configuração do ambiente, gerenciando o backend, frontend e o banco de dados em contêineres
+
+1. Clone o repositório:
+2. git clone https://github.com/pro-pedropaulo/blog-spring-angular.git
+3. cd blog-spring-angular/api/blog
+4. docker-compose up --build
+
+- Isso irá construir e iniciar os contêineres para o backend, frontend e PostgreSQL, configurando automaticamente o banco de dados.
+
+## Configuração Manual
 
 ### Backend
 1. Clone o repositório:
@@ -51,7 +64,7 @@ cd ../web/blog
 ``ng serve
 ``
 
-Acesse `http://localhost:4200` no navegador para ver a aplicação em funcionamento.
+Acesse `http://localhost:4200` no navegador para ver a aplicação em funcionamento,
 
 ## Dependências
 - **Frontend:** Angular 17.1.0, Tailwind CSS, Angular Material, Font Awesome, Quill (editor de texto rico)
@@ -75,6 +88,7 @@ A documentação da API está disponível em:  http://localhost:8080/swagger-ui/
 ### versão 1.1 
 - adicionado testes unitarioes para controllers e services
 - adicionado testes de integração para repositories
+- adicionado possibilidade de executar projeto via docker
 
 ## Licença
 Este projeto é disponibilizado sob uma licença livre.

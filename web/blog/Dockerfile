@@ -20,7 +20,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy the build output to replace the default nginx contents.
-COPY --from=build /app/dist/blog-spring-angular /usr/share/nginx/html
+COPY --from=build /app/dist/blog/browser /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
