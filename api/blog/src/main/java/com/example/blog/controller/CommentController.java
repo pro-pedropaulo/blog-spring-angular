@@ -34,9 +34,8 @@ public class CommentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
-        return commentService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Comment comment = commentService.findById(id);
+        return ResponseEntity.ok(comment);
     }
 
     @PutMapping("/{id}")
@@ -48,9 +47,7 @@ public class CommentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable Long id) {
-        Comment comment = commentService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
-
+        Comment comment = commentService.findById(id);
         commentService.delete(id);
         return ResponseEntity.ok().build();
     }

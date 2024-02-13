@@ -39,9 +39,8 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
-        return postService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Post post = postService.findById(id);
+        return ResponseEntity.ok(post);
     }
 
     @PostMapping

@@ -1,5 +1,6 @@
 package com.example.blog.service;
 
+import com.example.blog.exceptions.ResourceNotFoundException;
 import com.example.blog.model.Comment;
 import com.example.blog.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,9 @@ public class CommentService {
         return commentRepository.findAll();
     }
 
-    public Optional<Comment> findById(Long id) {
-        return commentRepository.findById(id);
+    public Comment findById(Long id) {
+        return commentRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Comment not found with id: " + id));
     }
 
     public Comment save(Comment comment) {

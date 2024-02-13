@@ -1,5 +1,6 @@
 package com.example.blog.service;
 
+import com.example.blog.exceptions.ResourceNotFoundException;
 import com.example.blog.model.User;
 import com.example.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,8 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User not found with id: " + id));
     }
 
     public User findByUsername(String username) {

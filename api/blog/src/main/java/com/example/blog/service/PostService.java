@@ -1,5 +1,6 @@
 package com.example.blog.service;
 
+import com.example.blog.exceptions.ResourceNotFoundException;
 import com.example.blog.model.Post;
 import com.example.blog.repository.CommentRepository;
 import com.example.blog.repository.PostRepository;
@@ -26,9 +27,9 @@ public class PostService {
     public List<Post> findAll() {
         return postRepository.findAll();
     }
-
-    public Optional<Post> findById(Long id) {
-        return postRepository.findById(id);
+    public Post findById(Long id) {
+        return postRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Post not found with id: " + id));
     }
 
     public Post save(Post post) {

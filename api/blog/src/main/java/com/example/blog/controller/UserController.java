@@ -27,6 +27,12 @@ public class UserController {
         return userService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+       User user = userService.findById(id);
+         return ResponseEntity.ok(user);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         User user = userService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
