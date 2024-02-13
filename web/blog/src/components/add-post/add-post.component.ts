@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PostService } from '../../services/post/post.service';
 import { Post } from '../../model/post.model';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Add this import
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +20,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-add-post',
   standalone: true,
-  imports: [CKEditorModule, FormsModule, CommonModule, HttpClientModule,
+  imports: [FormsModule, CommonModule, HttpClientModule,
     MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule,
      MatSelectModule, MatIconModule, MatProgressSpinnerModule,  QuillModule],
   providers: [PostService, AuthService],
