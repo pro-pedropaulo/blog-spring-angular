@@ -3,6 +3,7 @@ package com.example.blog.service;
 import com.example.blog.exceptions.ResourceNotFoundException;
 import com.example.blog.model.User;
 import com.example.blog.repository.UserRepository;
+import com.example.blog.util.ExceptionMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class UserService {
 
     public User update(Long id, User userDetails) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.USER_NOT_FOUND + id));
 
         user.setUsername(userDetails.getUsername());
         user.setPassword(userDetails.getPassword());
@@ -35,7 +36,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.USER_NOT_FOUND + id));
         userRepository.delete(user);
     }
 
@@ -49,7 +50,7 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("User not found with id: " + id));
+                new ResourceNotFoundException(ExceptionMessages.USER_NOT_FOUND + id));
     }
 
     public User findByUsername(String username) {

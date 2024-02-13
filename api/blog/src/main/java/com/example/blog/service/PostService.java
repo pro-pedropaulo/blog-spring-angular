@@ -5,6 +5,7 @@ import com.example.blog.model.Post;
 import com.example.blog.repository.CommentRepository;
 import com.example.blog.repository.PostRepository;
 import com.example.blog.repository.ReactionRepository;
+import com.example.blog.util.ExceptionMessages;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class PostService {
     }
     public Post findById(Long id) {
         return postRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Post not found with id: " + id));
+                new ResourceNotFoundException(ExceptionMessages.POST_NOT_FOUND_WITH_ID + id));
     }
 
     public Post save(Post post) {
@@ -48,7 +49,7 @@ public class PostService {
     @Transactional
     public void deletePost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.POST_NOT_FOUND_WITH_ID + id));
 
         commentRepository.deleteByPostId(id);
         reactionRepository.deleteByPostId(id);
@@ -65,7 +66,7 @@ public class PostService {
             }
 
             return postRepository.save(post);
-        }).orElseThrow(() -> new RuntimeException("Post not found"));
+        }).orElseThrow(() -> new RuntimeException(ExceptionMessages.POST_NOT_FOUND));
     }
 
     public Post dislikePost(Long postId, String username) {
@@ -77,7 +78,7 @@ public class PostService {
             }
 
             return postRepository.save(post);
-        }).orElseThrow(() -> new RuntimeException("Post not found"));
+        }).orElseThrow(() -> new RuntimeException(ExceptionMessages.POST_NOT_FOUND));
     }
 
 }

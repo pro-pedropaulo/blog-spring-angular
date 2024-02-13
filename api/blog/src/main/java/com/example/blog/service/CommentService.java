@@ -3,6 +3,7 @@ package com.example.blog.service;
 import com.example.blog.exceptions.ResourceNotFoundException;
 import com.example.blog.model.Comment;
 import com.example.blog.repository.CommentRepository;
+import com.example.blog.util.ExceptionMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class CommentService {
 
     public Comment findById(Long id) {
         return commentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Comment not found with id: " + id));
+                new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND + id));
     }
 
     public Comment save(Comment comment) {
@@ -30,7 +31,7 @@ public class CommentService {
 
     public Comment update(Long id, Comment commentDetails) {
         Comment existingComment = commentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND + id));
 
         existingComment.setContent(commentDetails.getContent());
 
@@ -40,7 +41,7 @@ public class CommentService {
 
     public void deleteComment(Long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND + id));
         commentRepository.delete(comment);
     }
 
