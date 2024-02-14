@@ -6,7 +6,7 @@ Este projeto é um sistema básico para um blog, incluindo adição e exclusão 
 
 ## Índice
 - [Instalação](#instalação)
-- [Configuração Utilizando Docker](#Configuração-Utilizando-Docker)
+- [Configuração Utilizando Docker](#Configuração-Utilizando-Docker-(recomendado))
 - [Configuração Manual](#Configuração-Manual)
   - [Backend](#backend)
   - [Frontend](#frontend)
@@ -84,7 +84,7 @@ A documentação da API está disponível em:  http://localhost:8080/swagger-ui/
 - Pedro Paulo
 
 ## Versões
-### versão 1.1 
+### versão 1.1 - Atualização realizada 13/02/24 22:06
 - adicionado testes unitarioes para controllers e services
 - adicionado testes de integração para repositories
 - adicionado possibilidade de executar projeto via docker
