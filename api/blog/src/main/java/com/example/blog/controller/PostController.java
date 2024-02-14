@@ -97,13 +97,12 @@ public class PostController {
 
     @PostMapping("/{id}/like")
     public ResponseEntity<?> likePost(@Valid @PathVariable Long id, HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        String token = request.getHeader("Authorization").substring(7);
+        String username = jwtUtil.getUsernameFromToken(token);
+        if (username == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        String token = authHeader.substring(7);
         try {
-            String username = jwtUtil.getUsernameFromToken(token);
             postService.likePost(id, username);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -111,10 +110,12 @@ public class PostController {
         }
     }
 
-
     @PostMapping("/{id}/dislike")
     public ResponseEntity<?> dislikePost(@Valid @PathVariable Long id, HttpServletRequest request) {
         String username = jwtUtil.getUsernameFromToken(request.getHeader("Authorization").substring(7));
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         try {
             postService.dislikePost(id, username);
             return ResponseEntity.ok().build();

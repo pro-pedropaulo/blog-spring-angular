@@ -52,12 +52,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         if (userService.existsByUsername(user.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Error: Username is already taken!");
+            return ResponseEntity.badRequest().body("Error: Username is already taken!");
         }
-        User newUser = userService.save(user);
-        return ResponseEntity.ok(newUser);
+        User savedUser = userService.save(user);
+        return savedUser != null ? ResponseEntity.ok(savedUser) : ResponseEntity.badRequest().body("Error: User could not be created!");
     }
 
     @PutMapping("/{id}")

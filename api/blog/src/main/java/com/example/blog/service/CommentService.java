@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -22,7 +21,7 @@ public class CommentService {
 
     public Comment findById(Long id) {
         return commentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND + id));
+                new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND_WITH_ID + id));
     }
 
     public Comment save(Comment comment) {
@@ -31,7 +30,7 @@ public class CommentService {
 
     public Comment update(Long id, Comment commentDetails) {
         Comment existingComment = commentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND_WITH_ID + id));
 
         existingComment.setContent(commentDetails.getContent());
 
@@ -41,7 +40,7 @@ public class CommentService {
 
     public void deleteComment(Long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.COMMENT_NOT_FOUND_WITH_ID + id));
         commentRepository.delete(comment);
     }
 

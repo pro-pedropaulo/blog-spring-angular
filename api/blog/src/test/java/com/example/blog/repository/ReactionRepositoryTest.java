@@ -29,6 +29,8 @@ public class ReactionRepositoryTest {
     void setUp() {
         user = new User();
         user.setUsername("testUser");
+        user.setPassword("testPass");
+        user.setEmail("testeUser@example.com");
         entityManager.persist(user);
 
         post = new Post();
