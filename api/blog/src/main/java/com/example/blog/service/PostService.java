@@ -6,6 +6,7 @@ import com.example.blog.repository.CommentRepository;
 import com.example.blog.repository.PostRepository;
 import com.example.blog.repository.ReactionRepository;
 import com.example.blog.util.ExceptionMessages;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class PostService {
                 });
     }
 
+    @Operation(summary = "first delete all comments and reactions associated with the post")
     @Transactional
     public void deletePost(Long id) {
         Post post = postRepository.findById(id)
@@ -57,6 +59,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    @Operation(summary = "Like a post")
     public Post likePost(Long postId, String username) {
         return postRepository.findById(postId).map(post -> {
             post.getDislikes().remove(username);
@@ -69,6 +72,7 @@ public class PostService {
         }).orElseThrow(() -> new RuntimeException(ExceptionMessages.POST_NOT_FOUND));
     }
 
+    @Operation(summary = "Dislike a post")
     public Post dislikePost(Long postId, String username) {
         return postRepository.findById(postId).map(post -> {
             post.getLikes().remove(username);

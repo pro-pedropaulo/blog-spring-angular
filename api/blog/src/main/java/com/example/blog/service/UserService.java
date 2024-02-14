@@ -4,6 +4,7 @@ import com.example.blog.exceptions.ResourceNotFoundException;
 import com.example.blog.model.User;
 import com.example.blog.repository.UserRepository;
 import com.example.blog.util.ExceptionMessages;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    @Operation(summary = "Authenticate a user")
     public User authenticate(String username, String password) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent() && user.get().getPassword().equals(password)) {

@@ -5,6 +5,7 @@ import com.example.blog.security.JWTUtil;
 import com.example.blog.service.CloudinaryService;
 import com.example.blog.service.PostService;
 import com.example.blog.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
+    @Operation(summary = "Create a new post")
     @PostMapping
     public ResponseEntity<Post> createPost(@Valid @RequestBody Post post, HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
@@ -65,6 +67,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    @Operation(summary = "Update an existing post")
     @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
         return postService.update(id, postDetails)
@@ -78,6 +81,7 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Upload images to Cloudinary")
     @PostMapping("/upload-images")
     public ResponseEntity<?> handleImageUpload(@RequestParam("files") MultipartFile[] files) {
         try {
@@ -95,6 +99,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Like a post")
     @PostMapping("/{id}/like")
     public ResponseEntity<?> likePost(@Valid @PathVariable Long id, HttpServletRequest request) {
         String token = request.getHeader("Authorization").substring(7);
@@ -110,6 +115,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Dislike a post")
     @PostMapping("/{id}/dislike")
     public ResponseEntity<?> dislikePost(@Valid @PathVariable Long id, HttpServletRequest request) {
         String username = jwtUtil.getUsernameFromToken(request.getHeader("Authorization").substring(7));

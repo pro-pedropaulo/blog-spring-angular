@@ -6,6 +6,7 @@ import com.example.blog.model.User;
 import com.example.blog.repository.PostRepository;
 import com.example.blog.repository.ReactionRepository;
 import com.example.blog.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class ReactionService {
     @Autowired
     private PostRepository postRepository;
 
+    @Operation(summary = "Save or update a reaction to a post")
     public Post saveOrUpdateReaction(Reaction reaction, Long postId, String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (!userOptional.isPresent()) {
@@ -51,6 +53,7 @@ public class ReactionService {
         return postRepository.save(post);
     }
 
+    @Operation(summary = "Update reaction counts for a post")
     private void updateReactionCounts(Post post) {
         long likeCount = reactionRepository.countByPostAndReactionLike(post, true);
         long dislikeCount = reactionRepository.countByPostAndReactionLike(post, false);

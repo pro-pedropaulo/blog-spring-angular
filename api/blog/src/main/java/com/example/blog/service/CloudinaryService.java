@@ -2,6 +2,7 @@ package com.example.blog.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ public class CloudinaryService {
         this.cloudinary = cloudinary;
     }
 
+    @Operation(summary = "Upload a file to Cloudinary")
     public String uploadFile(MultipartFile file) throws IOException {
         File uploadedFile = convertMultiPartToFile(file);
         Map uploadResult = cloudinary.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
@@ -28,6 +30,7 @@ public class CloudinaryService {
         return uploadResult.get("url").toString();
     }
 
+    @Operation(summary = "Convert MultipartFile to File")
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
         File convFile = new File(file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);

@@ -4,6 +4,7 @@ import com.example.blog.DTO.LoginDTO;
 import com.example.blog.model.User;
 import com.example.blog.security.JWTUtil;
 import com.example.blog.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class UserController {
          return ResponseEntity.ok(user);
     }
 
+    @Operation(summary = "Login")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         User user = userService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
@@ -49,6 +51,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Create a new user")
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         if (userService.existsByUsername(user.getUsername())) {
