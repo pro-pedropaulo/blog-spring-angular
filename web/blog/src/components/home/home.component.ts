@@ -45,9 +45,11 @@ export class HomeComponent {
     private cdRef: ChangeDetectorRef,
     private postUpdateService: PostUpdateService
   ) {
-    this.router.events.subscribe((event) => {
+    let previousUrl: string = '/';
+    this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.reloadPosts();
+        previousUrl = event.urlAfterRedirects;
       }
     });
   }
@@ -119,9 +121,10 @@ export class HomeComponent {
   }
 
   navigateToAddPost(): void {
-    this.router.navigate(['/add-post']).then(() => {
-      location.reload();
-    });
+    // this.router.navigate(['/add-post']).then(() => {
+    //   location.reload();
+    // });
+    this.router.navigate(['/add-post']);
   }
   
   loadPosts(loadMore: boolean = false): void {
@@ -208,9 +211,10 @@ export class HomeComponent {
   }
 
   navigateToComments(postId: number): void {
-    this.router.navigate(['/comments', postId]).then(() => {
-      location.reload();
-    });
+    // this.router.navigate(['/comments', postId]).then(() => {
+    //   location.reload();
+    // });
+    this.router.navigate(['/comments', postId]);
   }
   
   handleReaction(post: Post, isLike: boolean): void {

@@ -20,6 +20,9 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy the build output to replace the default nginx contents.
+COPY --from=build /app/dist/blog/browser /usr/share/nginx/html
+
+# Copy your custom default.conf if needed
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
