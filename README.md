@@ -79,7 +79,6 @@ A documentação da API está disponível em:  http://localhost:8080/swagger-ui/
 
 ## Resolução de Problemas
 - Problema conhecido: No sistema de like/dislike, quando um usuário dá um like, ele não consegue retirar a reação. Isso será corrigido na próxima atualização.
-- Melhorias na api com o uso do JWT
 
 ## Contribuidores
 - Pedro Paulo
@@ -89,19 +88,20 @@ A documentação da API está disponível em:  http://localhost:8080/swagger-ui/
 - adicionado testes unitarioes para controllers e services
 - adicionado testes de integração para repositories
 - adicionado possibilidade de executar projeto via docker
+- adicionada excessoes para tratar erros
+- adicionada algumas explicações de operações cruciais no swagger
 
 ## Licença
 Este projeto é disponibilizado sob uma licença livre.
 
 ## Melhorias Futuras
+- Aprimoramento da autenticação com JWT.
 - Aprimorar Testes Unitários
 - Padronização de codigo com ESLINT
 - Criação de usuário com verificação por e-mail.
 - Edição de usuário.
 - Deploy da aplicação.
-- Aprimoramento da autenticação com JWT.
 - Migração do armazenamento de mídia do Cloudinary para AWS.
 - Criação de ambientes para produção e teste
 - Mostrar usuarios que reagiram a publicação
-- Criação excessões personalizadas
 - Outras melhorias conforme necessário.
