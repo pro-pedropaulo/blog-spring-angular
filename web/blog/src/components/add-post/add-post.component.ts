@@ -112,22 +112,18 @@ export class AddPostComponent {
         try {
             let imageUrlsArray: string[] = [];
             if (this.postType === 'post' && this.selectedImage) {
-                // Chamada do método unificado com um único arquivo
                 imageUrlsArray = await this.postService.uploadImages(this.selectedImage);
             } else if (this.postType === 'album' && this.selectedImages.length > 0) {
-                // Chamada do método unificado com múltiplos arquivos
                 imageUrlsArray = await this.postService.uploadImages(this.selectedImages);
             }
     
-            // Prepara o objeto Post baseado no tipo de postagem
             const postToSubmit: Post = {
                 title: this.postData.title,
                 content: this.postData.content,
-                imageUrl: this.postType === 'post' ? imageUrlsArray[0] : '', // Pega a primeira URL para post único
-                imageUrls: this.postType === 'album' ? imageUrlsArray : [] // Usa todas as URLs para álbuns
+                imageUrl: this.postType === 'post' ? imageUrlsArray[0] : '', 
+                imageUrls: this.postType === 'album' ? imageUrlsArray : [] 
             };
     
-            // Cria o post usando o serviço
             this.postService.createPost(postToSubmit).subscribe({
                 next: (response) => {
                     this.isLoading = false;

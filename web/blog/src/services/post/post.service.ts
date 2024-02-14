@@ -58,7 +58,7 @@ async uploadImages(files: File | File[]): Promise<string[]> {
   }
 
   try {
-      const response = await this.http.post<any>('http://localhost:8080/posts/upload-images', formData).toPromise();
+      const response = await this.http.post<any>(`${this.apiUrl}/posts/upload-images`, formData).toPromise();
       return response.imageUrls;
   } catch (error) {
       console.error('Erro ao fazer upload das imagens:', error);
